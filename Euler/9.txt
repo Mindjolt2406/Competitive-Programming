@@ -1,0 +1,22 @@
+--- Clarification Required
+
+
+Given:
+    a,b,c is a pythagorean triplet
+    a+b+c=1000
+
+To find abc
+
+I said a pythagorean primitive triplet could be of the form 2s, s^2-1,s^2+1
+a,b,c might be a multiple of this triplet
+
+While assuming a,b,c was the primitive, I came across the equation  -->  s^2 +s = 500
+Now s had no real solution. 
+So I assumed k(d+e+f) = 1000 where d,e,f was the pythagorean triple. 
+The co-efficient of s was 1, so I had to find a factor of 500 who had a pair of factors with the difference of 1
+I got 20 -> 500/25
+s got the value of 4, and the primitive became (8,15,17)
+So I multiplied everything by 25 and got (200,375,425) to be the final answer
+
+
+Note: I found this method to be a little too dodgy. Clarification Required

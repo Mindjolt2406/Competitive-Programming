@@ -1,7 +1,18 @@
 #include<bits/stdc++.h>
+#define mt make_tuple
+#define mp make_pair
 #define pu push_back
-#define m make_pair
 #define INF 1000000001
+#define MOD 1000000007
+#define ll long long int
+#define ld long double
+#define vi vector<int>
+#define vll vector<long long int>
+#define sc(n) scanf("%d",&n);
+#define scll(n) scanf("%lld",&n);
+#define scld(n) scanf("%Lf",&n);
+#define scr(s) {char temp[1000000];scanf("%s",temp);s = temp;}
+
 using namespace std;
 
 map <long long int,long long int> d;
@@ -10,46 +21,12 @@ long long int* parent;
 vector< pair<long long int,long long int> >prt;
 vector < pair <long long int,long long int> > *adj;
 
-void addEdge(long long int u,long long int v,long long int key)
+void addEdge(ll a,ll b,ll c)
 {
-  adj[u].pu(m(v,key));
-  adj[v].pu(m(u,key));
+  adj[a].pu(mp(b,c));
+  adj[b].pu(mp(a,c));
 }
 
-// void print(vector< pair <long long int,long long int> > heap)
-// {
-//   cout<<endl;
-//   cout<<string((int)8*heap.size(),'-')<<endl;
-//   for(long long int i=0;i<heap.size();i++)
-//   {
-//     cout<<"( "<<heap[i].first<<" "<<heap[i].second<<" ) ";
-//   }
-//   cout<<endl;
-//   cout<<string((int)8*heap.size(),'-')<<endl;
-//   cout<<endl;
-// }
-//
-// void printm()
-// {
-//   cout<<"MAP"<<endl;
-//   for(it = d.begin();it!=d.end();it++) cout<<(it->first)<<" "<<(it->second)<<endl;
-// }
-//
-// void printprt()
-// {
-//   cout<<endl<<"----"<<endl;
-//   cout<<"PRIORITY"<<endl;
-//   for(long long int i=0;i<prt.size();i++) cout<<prt[i].first<<" "<<prt[i].second<<endl;
-//   cout<<"----"<<endl<<endl;
-// }
-//
-// void printcolour(long long int* l,long long int n)
-// {
-//   cout<<endl;
-//   cout<<"Colour"<<endl;
-//   for(int i=0;i<n;i++) cout<<l[i]<<" ";
-//   cout<<endl<<endl;
-// }
 void bottomupheapify(vector< pair<long long int,long long int> > &l,long long int n,long long int index)
 {
   d[l[index].first] = index;
@@ -131,33 +108,22 @@ void delete1(vector< pair<long long int,long long int> >&l,long long int n,long 
   deletemin(l,n);
 }
 
-// void decreasekey(vector <long long int> &l,long long int n, long long int key,long long int value) // Decreases key TO value
-// {
-//   int index = d[key];
-//   l[index] = value;
-//   bottomupheapify(l,n,index);
-// }
-//
-// void increasekey(vector <long long int> &l,long long int n, long long int key,long long int value)
-// {
-//   int index = d[key];
-//   l[index] = value;
-//   topdownheapify(l,n,index);
-// }
-
 void dijkstra(long long int s,long long int n)
 {
+  // cout<<"jere"<<endl;
   vector< pair <long long int,long long int> >heap; //Initialising the heap
   // Priority
   long long int* colour = new long long int[n];
+  // cout<<"here2"<<endl;
   for(long long int i=0;i<n;i++) {colour[i] = 0;parent[i] = i;}
-  for(long long int i=0;i<n;i++) prt.pu(m(i,INF));
+  for(long long int i=0;i<n;i++) prt.pu(mp(i,INF));
   prt[s].second = 0;
   parent[s] = s;
   // Dijkstra initialisation
   heap.pu(prt[s]);
   long long int counter = 1;
   colour[s] = 1;
+  // cout<<"here"<<endl;
   while(!heap.empty())
   {
     pair <long long int,long long int> p = heap[0];
@@ -181,11 +147,14 @@ void dijkstra(long long int s,long long int n)
       long long int v = adj[u][i].first;
       long long int w = adj[u][i].second;
       pair <long long int,long long int> p1;
+      ll c = w+pr;
+
+      // if(k<=c%(2*k) && adj[u][i].first!=n-1) c+=(2*k - c%(2*k));
       if(colour[v]==0)
       {
         counter++;
         colour[v] = 1;
-        p1 = m(v,w+pr);
+        p1 = mp(v,c);
         prt[v] = p1;
         // cout<<"Inserting "<<p1.first<<endl;
         insert(heap,counter,p1);
@@ -195,8 +164,8 @@ void dijkstra(long long int s,long long int n)
       }
       else if(colour[v]==1)
       {
-        p1 = m(v,min(w+pr,prt[v].second));
-        if(w+pr<prt[v].second)parent[v] = u;
+        p1 = mp(v,min(c,prt[v].second));
+        if(c<prt[v].second)parent[v] = u;
         prt[v] = p1;
         long long int index = d[v];
         heap[index].second = p1.second;
@@ -210,34 +179,71 @@ void dijkstra(long long int s,long long int n)
     // print(heap);
   }
 }
+
+
 int main()
 {
-  long long int n;
-  long long int s;//Source
-  long long int q;
-  cin>>n>>s>>q;
-  adj = new vector < pair <long long int,long long int> >[n];
-  for(long long int h=0;h<q;h++)
+  int t;
+  cin>>t;
+  while(t--)
   {
-    long long int a,b,key;
-    cin>>a>>b>>key;
-    addEdge(a,b,key);
-  }
-  for(long long int i=0;i<n;i++)
-  {
-    cout<<i<<" : ";
-    for(long long int j=0;j<adj[i].size();j++) cout<<adj[i][j].first<<" ";
+    ll n,q;
+    cin>>n>>q;
+    // tuple<int,int,int> t;
+    parent = new ll[n];
+    adj = new vector<pair<ll,ll> >[n];
+    set<ll>*visited = new set<ll>[n];
+    map<pair<ll,ll>, ll> e;
+    map<pair<ll,ll>, ll> :: iterator it1;
+    // ll*dp = new int[n];
+    // for(int i=0;i<n;i++) prt[i] = INF;
+    for(int h=0;h<q;h++)
+    {
+      ll a,b,c;
+      cin>>a>>b>>c;
+      a--;b--;
+      // cout<<a<<" "<<b<<endl;
+      if(a!=b)
+      {
+        ll a1 = min((int)a,(int)b);
+        ll b1 = max((int)a,(int)b);
+        a = a1;
+        b = b1;
+        if(e.find(mp(a,b))!=e.end()) {e[mp(a,b)] = min((int)e[mp(a,b)],(int)c);}
+        else e[mp(a,b)] = c;
+        // else addEdge(a,b,c);
+      }
+    }
+    for(it1=e.begin();it1!=e.end();it1++)
+    {
+      pair<ll,ll> p = it1->first;
+      ll key= it1->second;
+      addEdge(p.first,p.second,key);
+    }
+    // dp[0] = 0;
+    // dfs(adj,visited,0,k,dp,n);
+    int source;
+    cin>>source;
+    dijkstra(source-1,n);
+    for(int i=0;i<n;i++)
+    {
+      if(i!=source-1)
+      {
+        if(prt[i].second!=INF)cout<<prt[i].second<<" ";
+        else cout<<-1<<" ";
+      }
+    }
     cout<<endl;
+    d.clear();
+    prt.clear();
+    for(int i=0;i<n;i++) adj[i].clear();
+    for(int i=0;i<n;i++) cout<<parent[i]+1<<" parent of "<<i+1<<" distance is "<<prt[i].second<<endl;
+    // cout<<"here"<<endl;
+    // printf("%lld\n",prt[n-1].second);
   }
-  cout<<endl;
-  parent = new long long int[n];
-  dijkstra(s,n);
-  for(long long int i=0;i<prt.size();i++) cout<<prt[i].first<<" "<<prt[i].second<<endl;
-  for(int i=0;i<n;i++)
-  {
-    cout<<"i: "<<i<<" parent: "<<parent[i]<<endl;
-  }
+  return 0;
 }
+
 
 /*
 5 1 7

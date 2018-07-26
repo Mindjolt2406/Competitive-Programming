@@ -1,0 +1,9 @@
+To find:
+    The sum of the multiples of 3 and 5 below 1000
+
+Approach I
+  Use a loop
+
+Approach II
+  Just use sum of AP
+

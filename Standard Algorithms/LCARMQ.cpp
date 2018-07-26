@@ -1,3 +1,4 @@
+// I don't think it's completed
 #include<iostream>
 #include<cmath>
 #include<algorithm>
@@ -25,6 +26,11 @@ void print(int* l,int n)
     cout<<l[i]<<" ";
   }
   cout<<endl;
+}
+
+node lca(node*tree, node a, node b)
+{
+  node n = find(a.data,b.data)
 }
 
 node build(node* tree,int*l,int pos,int beg,int end,int k,int n)

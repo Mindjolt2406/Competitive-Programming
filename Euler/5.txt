@@ -1,0 +1,21 @@
+To find:
+  Smallest number which is divisble by n(20 actually)
+
+Approach : Find LCM of all numbers from 1 to 20
+
+
+Method I - Brute Force
+
+  Start iterating from n and keep adding n while checking if the iterator is divisble by all numbers from n/2 to n.
+
+  Time Complexity: O(n^n) (Loose upper bound)
+  Space Complexity: O(1)
+
+Method II - A better algo - Find the LCM
+  
+  To find LCM(a1,a2,..,an), find LCM(an,LCM(an-1,...LCM(a2,a1)))
+  Since all the LCMs are pairs, we can use the formula a*b = LCM(a,b)*GCD(a,b)
+  It is easy to compute GCD.
+
+  Time Complexity: O(nlogn)-> Takes(log(n,2) to compute gcd(n,n/2).Worst case, do it n times)
+  Space Complexity: O(1)

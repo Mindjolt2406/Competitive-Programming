@@ -111,22 +111,6 @@ def genRandomWeightedGraph(N, E, L, R, connected = False):
 	return wgraph
 
 if __name__ == '__main__':
-	n = randrange(1,10)
+	n = randrange(5,10)
 	print n
-	l = genRandomArray(n,-100,100)
-	for j in l: print j,
-	print ""
-	q = randrange(1,20)
-	print q
-	for i in range(q):
-		t = randrange(1,3)
-		if(t==1):
-			print 1,
-			a = randrange(1,n)
-			b = randrange(a,n)
-			print a,b
-		else:
-			print 2,
-			a = randrange(-100,100)
-			print a
-			n+=1
+	for i in range(n): print randrange(1,30),

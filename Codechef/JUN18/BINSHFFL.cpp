@@ -9,8 +9,12 @@ int main()
   {
     long long int a,b;
     cin>>a>>b;
-    if(a==b) {cout<<0<<endl;return 0;}
-    if(b==1 || b==0) {cout<<-1<<endl; return 0;}
+    long long int aa,bb;
+    aa = a;
+    bb= b;
+    if(a==b) {cout<<0<<endl;continue;}
+    else if(a==0 && b==1) {cout<<1<<endl;continue;}
+    else if(b==1 || b==0) {cout<<-1<<endl; continue;}
     string sa,sb;
     // cin>>sa>>sb;
     int counta = 0, countb = 0;
@@ -43,7 +47,18 @@ int main()
     }
     if(b1<=a1)
     {
-      cout<<c+1+countd<<endl;
+      // if(b1==a1)
+      // {
+      //   if(countd==0) cout<<2<<endl;
+      //   // else if(bb==aa+1) cout<<1<<endl;
+      //   else cout<<max(2,countd)<<endl;
+      // }
+      // else
+      // {
+        if(a1-b1+1 < countd) cout<<countd-(a1-b1)<<endl;
+        else if(a1-b1+1==countd) cout<<1<<endl;
+        else cout<<2<<endl;
+      // }
     }
     else cout<<c + countd<<endl;
   }
