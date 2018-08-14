@@ -1,3 +1,4 @@
+// Will not ork
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -17,24 +18,23 @@ using namespace std;
 
 int main()
 {
-  int n;
-  sc(n);
-  int*l = new int[n];
-  int* count = (int*)calloc(100001,sizeof(int));
-  int counter = 0;
-  for(int i=0;i<n;i++)
+  int t;
+  sc(t);
+  while(t--)
   {
-    if(count[l[i]]) count[l[i]]++
-    sc(l[i]);count[l[i]]++;}
-  int**dp = new int*[n];
-  for(int i=0;i<n;i++) dp[i] = new int[2];
-  for(int i=0;i<n;i++) {dp[i][0] = -1;dp[i][1] = -1;}
-  sort(l,l+n);
-  dp[n-1][1] = count[l[n-1]];
-  dp[n-1][0] = 0;
-  for(int i=n-2;i>=0;i--)
-  {
-    dp[i][1] =
+    int n;
+    sc(n);
+    int*l = new int[n];
+    int*m = new int[n];
+    for(int i=0;i<n;i++){sc(l[i]);m[i] = l[i];}
+    sort(m,m+n);
+    int i=0,j = 0,count = 0;
+    while(i<n)
+    {
+      if(l[i]==m[j]) {j++;count++;}
+      i++;
+    }
+    cout<<n-count<<endl;
   }
   return 0;
 }

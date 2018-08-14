@@ -17,24 +17,22 @@ using namespace std;
 
 int main()
 {
-  int n;
-  sc(n);
-  int*l = new int[n];
-  int* count = (int*)calloc(100001,sizeof(int));
-  int counter = 0;
+  ll n,k;
+  scll(n);
+  scll(k);
+  ll *l = new ll[n];
+  for(int i=0;i<n;i++) scll(l[i]);
+  ll sum1 = 0;
+  vector<ll> v;
+  v.pu(0);
   for(int i=0;i<n;i++)
   {
-    if(count[l[i]]) count[l[i]]++
-    sc(l[i]);count[l[i]]++;}
-  int**dp = new int*[n];
-  for(int i=0;i<n;i++) dp[i] = new int[2];
-  for(int i=0;i<n;i++) {dp[i][0] = -1;dp[i][1] = -1;}
-  sort(l,l+n);
-  dp[n-1][1] = count[l[n-1]];
-  dp[n-1][0] = 0;
-  for(int i=n-2;i>=0;i--)
-  {
-    dp[i][1] =
+    ll k1 = sum1;
+    sum1+=l[i];
+    // cout<<(i+1)*k<<" "<<sum1<<endl;
+    v.pu(sum1/k- k1/k);
   }
+  for(int i=1;i<=n;i++) printf("%lld ",v[i]);
+  printf("\n");
   return 0;
 }

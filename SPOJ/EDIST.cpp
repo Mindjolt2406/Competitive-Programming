@@ -1,3 +1,4 @@
+// I didn't take care of the empty string case, so it gave WA before I looked at geeksforgeeeks
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -54,7 +55,6 @@ int recur(int**dp,string a,string b,int n, int m)
   //   else if(i==0 && j==0) {dp[0][0] = 0;c = 0;}
   //   c++;
   // }
-  // cout<<"c: "<<c<<" i: "<<i<<" j: "<<j<<endl;
   // return c;
 }
 

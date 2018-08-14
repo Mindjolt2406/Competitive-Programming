@@ -17,24 +17,25 @@ using namespace std;
 
 int main()
 {
-  int n;
-  sc(n);
-  int*l = new int[n];
-  int* count = (int*)calloc(100001,sizeof(int));
-  int counter = 0;
+  int n,k;
+  sc(n);sc(k);
+  int*l  = new int[n];
+  set<int> s,s1;
+  int boo = 0;
   for(int i=0;i<n;i++)
   {
-    if(count[l[i]]) count[l[i]]++
-    sc(l[i]);count[l[i]]++;}
-  int**dp = new int*[n];
-  for(int i=0;i<n;i++) dp[i] = new int[2];
-  for(int i=0;i<n;i++) {dp[i][0] = -1;dp[i][1] = -1;}
-  sort(l,l+n);
-  dp[n-1][1] = count[l[n-1]];
-  dp[n-1][0] = 0;
-  for(int i=n-2;i>=0;i--)
-  {
-    dp[i][1] =
+    sc(l[i]);
+    if(s.find(l[i])!=s.end()) {boo = 1;break;}
+    else s.insert(l[i]);
   }
+  if(boo){cout<<0<<endl;return 0;}
+  for(int i=0;i<n;i++)
+  {
+    if(s.find(l[i]&k)!=s.end() && (l[i]&k)!=l[i]) {boo = 1;break;}
+    else if(s1.find(l[i]&k)!=s1.end()) {boo = 2;}
+    else s1.insert(l[i]&k);
+  }
+  if(boo){cout<<boo<<endl;return 0;}
+  else cout<<-1<<endl;
   return 0;
 }
