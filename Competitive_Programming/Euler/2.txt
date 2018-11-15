@@ -1,0 +1,24 @@
+To find:
+  The sum of all even fibonacci numbers below 4,000,000
+
+Method 1:
+  Brute force - O(2**n) or O(n) algorithm
+
+Method 2:
+  Again, an O(n) algorithm. The difference is that this uses a formula.
+
+
+  My find:
+    The fibonacci sequence is a sequence of 2 odd and 1 even numbers, as in - E,O,O,E,O,O... (starting from zero)
+    f(n) V n>6, can be written as 4*f(n-3) + f(n-6)
+      
+      f(n) = f(n-1) + f(n-2)
+      f(n) = 2*f(n-2) + f(n-3)
+      f(n) = 3*f(n-3) + f(n-4) + f(n-4)
+      f(n) = 3*f(n-3) + f(n-4) + f(n-5) + f(n-6)
+      f(n) = 4*f(n-3) + f(n-6)
+
+    The significance of this sequence is that it is a set of 3 subsequences of fibonacci sequence which contain every third term.
+    One such subsequence is the sequence of all even fibonacci numbers.
+    Therefore one does not need to check if x%2==0, thus making this method of solving 3x faster.
+

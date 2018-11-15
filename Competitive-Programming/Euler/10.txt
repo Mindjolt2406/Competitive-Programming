@@ -1,0 +1,18 @@
+A simple prime sieve
+To find:
+    The sum of all the prime numbers less than 2000000
+
+Approach : The Sieve of Erasthothenes
+
+Method I
+    Generate an array of size 2000002 and intialise all the elements to True except for l[0] and l[1] -> False( We know they aren't prime)
+    Iterate through the array. If an element is true, make all it's multiples false. 
+    The remaining indices of all the remaining True elements are prime numbers
+
+NOTE
+    For larger n,say 10**12, we can't make an array of that size. 
+    So, one can use a segmented sieve, where an array of size (say) 10**6 is created. 
+    Now, after 'sieving' the first 10**6 elements, run through the other segments of 10**6 and continue. 
+    Just remove the multiples from of the primes from the previous sieve first.
+    The time compexity remains the same - O(nlog(log(n))), but space complexity reduces to 10**6 + k, where k is the number of primes till n.
+    

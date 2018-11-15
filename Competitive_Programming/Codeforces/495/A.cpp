@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+#define mt make_tuple
+#define mp make_pair
+#define pu push_back
+#define INF 1000000001
+#define MOD 1000000007
+#define ll long long int
+#define ld long double
+#define vi vector<int>
+#define vll vector<long long int>
+#define sc(n) scanf("%d",&n);
+#define scll(n) scanf("%lld",&n);
+#define scld(n) scanf("%Lf",&n);
+#define scr(s) {char temp[1000000];scanf("%s",temp);s = temp;}
+
+using namespace std;
+
+int main()
+{
+  int n,d;
+  sc(n);sc(d);
+  int *l=  new int[n];
+  for(int i=0;i<n;i++) sc(l[i]);
+  int count = 2;
+  for(int i=1;i<n;i++)
+  {
+    if(l[i-1]+d>l[i]-d) continue;
+    else if(l[i-1]+d==l[i]-d) count++;
+    else count+=2;
+  }
+  cout<<count<<endl;
+  return 0;
+}

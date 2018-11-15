@@ -1,0 +1,15 @@
+To find:
+  The largest palindrome number on multpiplying 2 3-digit numbers
+
+Method 1:
+  Use brute force to mulitply every 3 digit number with each other and check if is a palindrome.Then find the max for it.
+
+Method 2:
+  It is similar to the first approach. The only difference is that instead of multiplying 990*990 numbers, I'll be multiplying 99*990 numbers instead.
+  Palindromes are divisible by 11. 
+  This can be easily checked by the divisibility by 11 rule. 
+  The rule says that the sum of the digits in the odd places - sum of the digits in the even places %11==0 => n%11==0
+  Palindromes always fall under this category as the length of a palindrome is always even. 
+  Thus I'll multiply 990*(999,998...1) then 981 and so on.
+  This algo is 10x faster than Method 1
+

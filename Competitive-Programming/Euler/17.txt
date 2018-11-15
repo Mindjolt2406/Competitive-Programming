@@ -1,0 +1,28 @@
+To find:
+    A triangular number with more than 500 divisors
+
+GENERAL METHOD
+    Iterate through the triangular numbers using n*(n+1)/2 and find the number of divisors for each
+    Finding the number of divisors is the part of the program which takes the most computation
+    Any optimization will differ on the function findnodivisors(n)
+
+Method I
+    #(Implemented in 17.py)
+    Brute force - Iterate till root(k) where k is a triangular number
+
+Method II
+    #(Not yet implemented)
+    (Something I had thought of while solving and would've used if the brute force approach wouldn't have worked.)
+    Generate a list of primes till a high number, like 10**6. (How do you get this upper bound?)
+    Iterate through this list until root(k)
+      Let one prime be p.
+      Now, check if k%p==0. If yes, check for k/p^2 , k/p^3 and so on. 
+      For each 'YES', add 2 to the divisor count, unless k/p^n = p^n. Then only add 1 (It could be a triangular square number)
+   
+Confusions
+    I thought 500 divisors meant 500 coprime factors initally, which made me think that the number had to be greater than 500!
+
+Questions
+    How do you get the upper bound for the number of prime numbers you need? It cannot be dynamic, as you'll need to make the sieve from scratch
+
+    
