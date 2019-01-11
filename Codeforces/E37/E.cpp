@@ -46,7 +46,7 @@ int main()
   vector<int>*adj = new vector<int> [n];
   vector<int> deg,vert,other; 
   deg.assign(n,0);
-  vert.assign(n,0);
+  vert.assign(n,1);
   other.assign(n,0);
   set<pair<int,int> > edge;
   int boo = 1,count = 0; // Checks whether the guys taken granted for 1 component are a part of the guys in the dfs component or no
@@ -60,19 +60,19 @@ int main()
     deg[a]++;deg[b]++;
   }
   
-  for(int i=0;i<n;i++) other[i] = 1;
+  // for(int i=0;i<n;i++) other[i] = 1;
 
   for(set<pair<int,int> >:: iterator it = edge.begin();it!=edge.end();it++)
   {
-    if(deg[it->fi]>n/2) 
+    if(n-1-deg[it->fi]>n/2) 
     {
-      vert[it->fi] = 1;
-      other[it->fi] = 0;
+      vert[it->fi] = 0;
+      other[it->fi] = 1;
     }
-    if(deg[it->se]>n/2) 
+    if(n-1-deg[it->se]>n/2) 
     {
-      vert[it->se] = 1;
-      other[it->se] = 0;
+      vert[it->se] = 0;
+      other[it->se] = 1;
     }
   }
 
@@ -115,30 +115,38 @@ int main()
   for(int i=0;i<n;i++) if(other[i]) visited[i] = 1;
   // map for counting the number of guys per component
   map<int,int> d;
+  int key = 1;
+  // t(boo,count);
   if(!boo) 
   {
     int count = 0;
-    // t(keep);
     for(int i=0;i<keep.size();i++) dfs(adj,visited,keep[i],1);
     for(int i=0;i<n;i++) if(visited[i]==1) count++;
     // for(int i=0;i<n;i++) cout<<visited[i]<<" ";cout<<endl;
-    d[1] = count;
+    // t(count);
+    key++;
   }
-  else d[1] = count;
+  else if(count!=0) {key++;}
   // Dfs for connected components
-  int key = 2;
+  // int key = 2;
   for(int i=0;i<n;i++)
   {
     if(!visited[i] && vert[i])
     {
       // t(i,key);
       dfs(adj,visited,i,key);
-      d[key] = 1;
+      // d[key] = 1;
       key++;
+      // t(key);
     }
-    else if(vert[i] && visited[i] && visited[i]!=1) d[visited[i]]++;
+    // else if(vert[i] && visited[i] && visited[i]!=1) d[visited[i]]++;
   }
 
+  for(int i=0;i<n;i++)
+  {
+    if(d.find(visited[i])!=d.end()) d[visited[i]]++;
+    else d[visited[i]] = 1;
+  }
   // for(int i=0;i<n;i++) cout<<visited[i]<<" ";cout<<endl;
 
   vector<int> out;

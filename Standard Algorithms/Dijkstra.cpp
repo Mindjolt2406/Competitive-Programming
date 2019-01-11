@@ -123,7 +123,6 @@ void dijkstra(long long int s,long long int n)
   heap.pu(prt[s]);
   long long int counter = 1;
   colour[s] = 1;
-  // cout<<"here"<<endl;
   while(!heap.empty())
   {
     pair <long long int,long long int> p = heap[0];
@@ -149,17 +148,13 @@ void dijkstra(long long int s,long long int n)
       pair <long long int,long long int> p1;
       ll c = w+pr;
 
-      // if(k<=c%(2*k) && adj[u][i].first!=n-1) c+=(2*k - c%(2*k));
       if(colour[v]==0)
       {
         counter++;
         colour[v] = 1;
         p1 = mp(v,c);
         prt[v] = p1;
-        // cout<<"Inserting "<<p1.first<<endl;
         insert(heap,counter,p1);
-        // cout<<"Succesful! "<<p1.first<<endl;
-        // printm();
         parent[v] = u;
       }
       else if(colour[v]==1)
@@ -189,20 +184,16 @@ int main()
   {
     ll n,q;
     cin>>n>>q;
-    // tuple<int,int,int> t;
     parent = new ll[n];
     adj = new vector<pair<ll,ll> >[n];
     set<ll>*visited = new set<ll>[n];
     map<pair<ll,ll>, ll> e;
     map<pair<ll,ll>, ll> :: iterator it1;
-    // ll*dp = new int[n];
-    // for(int i=0;i<n;i++) prt[i] = INF;
     for(int h=0;h<q;h++)
     {
       ll a,b,c;
       cin>>a>>b>>c;
       a--;b--;
-      // cout<<a<<" "<<b<<endl;
       if(a!=b)
       {
         ll a1 = min((int)a,(int)b);
@@ -220,8 +211,6 @@ int main()
       ll key= it1->second;
       addEdge(p.first,p.second,key);
     }
-    // dp[0] = 0;
-    // dfs(adj,visited,0,k,dp,n);
     int source;
     cin>>source;
     dijkstra(source-1,n);
@@ -238,7 +227,6 @@ int main()
     prt.clear();
     for(int i=0;i<n;i++) adj[i].clear();
     for(int i=0;i<n;i++) cout<<parent[i]+1<<" parent of "<<i+1<<" distance is "<<prt[i].second<<endl;
-    // cout<<"here"<<endl;
     // printf("%lld\n",prt[n-1].second);
   }
   return 0;

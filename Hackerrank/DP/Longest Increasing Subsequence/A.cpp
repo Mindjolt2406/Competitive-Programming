@@ -44,13 +44,9 @@ int main()
     memo[1] = l[0];
     for(int i=1;i<n;i++)
     {
-      // cout<<"n: "<<n<<endl;
       int c = bsearch(n,memo,l[i]);
-      // cout<<"c: "<<c<<endl;
       if(c==-1) {dp[i] = 1;memo[1] = min(l[i],memo[1]);}
       else {dp[i] = c+1;memo[c+1] = min(l[i],memo[c+1]);}
-      // for(int i=0;i<n;i++) cout<<dp[i]<<" ";cout<<endl;
-      // for(int i=0;i<n+1;i++) cout<<memo[i]<<" ";cout<<endl;
     }
     int max1 = 0;
     for(int i=0;i<n;i++) max1 = max(dp[i],max1);

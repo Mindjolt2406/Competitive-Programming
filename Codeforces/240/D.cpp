@@ -1,0 +1,61 @@
+// Upsolved
+#include<bits/stdc++.h>
+#define mt make_tuple
+#define mp make_pair
+#define pu push_back
+#define INF 1000000001
+#define MOD 1000000007
+#define ll long long int
+#define ld long double
+#define vi vector<int>
+#define vll vector<long long int>
+#define fi first
+#define se second
+#define sc(n) scanf("%d",&n);
+#define scll(n) scanf("%lld",&n);
+#define scld(n) scanf("%Lf",&n);
+#define scr(s) {char temp[1000000];scanf("%s",temp);s = temp;}
+#define t1(x)                cerr<<#x<<" : "<<x<<endl
+#define t2(x, y)             cerr<<#x<<" : "<<x<<" "<<#y<<" : "<<y<<endl
+#define t3(x, y, z)          cerr<<#x<<" :" <<x<<" "<<#y<<" : "<<y<<" "<<#z<<" : "<<z<<endl
+#define t4(a,b,c,d)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<endl
+#define t5(a,b,c,d,e)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<" "<<#e<<" : "<<e<<endl
+#define GET_MACRO(_1,_2,_3,_4,_5,NAME,...) NAME
+#define t(...) GET_MACRO(__VA_ARGS__,t5, t4, t3, t2, t1)(__VA_ARGS__)
+#define _ cout<<"here"<<endl;
+
+
+using namespace std;
+
+int dp[4001][4001] = {0};
+
+int main()
+{
+  int n,k;
+  sc(n);sc(k);
+  // for(int i=1;i<=k;i++) {dp[1][i] = 1;}
+  for(int i=1;i<=n;i++) dp[i][1] = 1;
+   
+  for(int i=1;i<=k;i++)
+  {
+    for(int j=1;j<=n;j++)
+    {
+      for(int k = j;k<=n;k+=j)
+      {
+        dp[k][i]+= dp[j][i-1];
+        dp[k][i]%=MOD;
+        // t(k,i,j,i-1,dp[k][i]); 
+      }
+    }
+  }
+  // for(int i=0;i<=n;i++)
+  // {
+  //   for(int j=0;j<=k;j++) cout<<dp[i][j]<<" ";
+  //   cout<<endl;
+  // }
+  ll sum1 = 0;
+  for(int i=1;i<=n;i++) {sum1+=dp[i][k];sum1%=MOD;}
+  cout<<sum1<<endl;
+  return 0;
+}
+

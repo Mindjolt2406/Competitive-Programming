@@ -1,3 +1,4 @@
+// Wrong use a queue
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -18,8 +19,9 @@
 #define t2(x, y)             cerr<<#x<<" : "<<x<<" "<<#y<<" : "<<y<<endl
 #define t3(x, y, z)          cerr<<#x<<" :" <<x<<" "<<#y<<" : "<<y<<" "<<#z<<" : "<<z<<endl
 #define t4(a,b,c,d)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<endl
-#define GET_MACRO(_1,_2,_3,_4,NAME,...) NAME
-#define t(...) GET_MACRO(__VA_ARGS__, t4, t3, t2, t1)(__VA_ARGS__)
+#define t5(a,b,c,d,e)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<" "<<#e<<" : "<<endl
+#define GET_MACRO(_1,_2,_3,_4,_5,NAME,...) NAME
+#define t(...) GET_MACRO(__VA_ARGS__,t5, t4, t3, t2, t1)(__VA_ARGS__)
 #define _ cout<<"here"<<endl;
 
 
