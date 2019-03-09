@@ -48,12 +48,44 @@ void bfs(vector < pair <int,int> > adj[],int n)
     cout<<u<<" ";
     visited[u] = 1;
     q.pop();
+    // if u==destination 
     for(int i=0;i<adj[u].size();i++)
     {
       if(visited[adj[u][i].first]==0){q.push(adj[u][i].first);visited[adj[u][i].first] = 1;}
     }
   }
 }
+
+/*
+
+queue<pair<int,int> > q;
+q.push(in);
+visited[][];
+while(!q.empty())
+{
+  pair<int,int> p = q.front();
+  q.pop();
+  visited[p.fi][p.se] = 1;
+
+  if(p==destination) // do something
+
+  // Push all the children
+
+  int dx[4] = {1,-1,0,0};
+  int dy[4] = {0,0,1,-1};
+
+  int x = p.fi, y = p.se;
+
+  for(int i=0;i<4;i++)
+  {
+    pair<int,int> temp = mp(p.fi+dx[i],p.se+dy[i]);
+    if(!visited[temp.fi][temp.se])
+    {
+      q.push(temp);
+    }
+  }
+}
+*/
 
 void dfs(vector < pair <int,int> > *adj,int u,int *visited)
 {
