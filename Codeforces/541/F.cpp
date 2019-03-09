@@ -30,10 +30,74 @@ IIIT Bangalore
 
 using namespace std;
 
+const int N = 300100;
+int p[N], sz[N];
+
+void create(int x){
+	p[x] = x;
+	sz[x] = 1;
+	return;
+}
+
+int find(int x){
+  if(x == p[x]) return x;
+  return p[x] = find(p[x]);
+}
+
+void merge(int x, int y){
+	x = find(x), y = find(y);
+	if(x == y) return;
+  if(sz[x] < sz[y]) swap(x, y);
+  p[y] = x;
+  sz[x] += sz[y];
+  return;
+}
+
+void dfs(vector<int>*adj,int u,vector<int>&visited)
+{
+  if(visited[u]) return;
+  visited[u] = 1;
+  cout<<u+1<<" ";
+  for(int i=0;i<adj[u].size();i++) dfs(adj,adj[u][i],visited);
+}
+
 int main()
 {
   __;
-  
+  int n;
+  cin>>n;
+  vector<pair<int,int> > v;
+  for(int i=0;i<n-1;i++) 
+  {
+    int a,b;
+    cin>>a>>b;
+    a--;b--;
+    v.pu(mp(a,b));
+  }
+
+  vector<int>*adj = new vector<int>[n];
+  vector<int> first(n), second(n);
+
+  for(int i=0;i<n;i++) {first[i] = i; second[i] = i;}
+
+  for(int i=0;i<n;i++) create(i);
+
+  for(int i=0;i<v.size();i++)
+  {
+    int x = find(v[i].fi), y = find(p[v[i].se]);
+    int a = first[x], b = second[x], c = first[y], d = second[y];
+    merge(x,y);
+    int z = find(x);
+    adj[a].push_back(c);
+    adj[c].push_back(a);
+    first[z] = b;
+    second[z] = d;
+  }
+
+  int c = first[find(0)];
+  vector<int> visited(n);
+  dfs(adj,c,visited);
+  cout<<endl;
   return 0;
 }
 

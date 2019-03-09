@@ -1,8 +1,3 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair

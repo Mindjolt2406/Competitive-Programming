@@ -1,8 +1,3 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -24,7 +19,7 @@ IIIT Bangalore
 #define t6(a,b,c,d,e,f)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<" "<<#e<<" : "<<e<<" "<<#f<<" : "<<f<<endl
 #define GET_MACRO(_1,_2,_3,_4,_5,_6,NAME,...) NAME
 #define t(...) GET_MACRO(__VA_ARGS__,t6,t5, t4, t3, t2, t1)(__VA_ARGS__)
-#define _ cerr<<"here"<<endl;
+#define _ cout<<"here"<<endl;
 #define __ {ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);}
 
 
@@ -33,7 +28,29 @@ using namespace std;
 int main()
 {
   __;
-  
+  int n;
+  cin>>n;
+  vector<int> v(n);
+  for(int i=0;i<n;i++) cin>>v[i];
+  for(int i=1;i<n;i++) v[i]^=v[i-1];
+  ll count = 0;
+  vector<int> odd(2e6);
+  vector<int> even(2e6);
+  odd[0]++;
+  for(int i=0;i<n;i++)
+  {
+    if(i%2==0)
+    {
+      count+=even[v[i]];
+      even[v[i]]++;
+    }
+    else 
+    {
+      count+=odd[v[i]];
+      odd[v[i]]++;
+    }
+  }
+  cout<<count<<endl;
   return 0;
 }
 

@@ -1,8 +1,3 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -33,7 +28,22 @@ using namespace std;
 int main()
 {
   __;
-  
+  int n;
+  ll k,m;
+  cin>>n>>m>>k;
+  vector<ll> v(n);
+  for(int i=0;i<n;i++) cin>>v[i];
+  sort(v.begin(),v.end());
+  reverse(v.begin(),v.end());
+  ll a = m/(k+1);
+  ll b = m%(k+1);
+  // t(a,b);
+  ll m1 = v[0], m2 = v[1];
+  ll count = 0;
+  // t(m1,m2);
+  count+= (m1*(k) + m2)*a;
+  count+= m1*b;
+  cout<<count<<endl;
   return 0;
 }
 

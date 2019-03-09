@@ -1,8 +1,10 @@
 /*
 Rathin Bhargava
-IIIT Bangalore
+IIIT-Bangalore
+Code taken from https://cp-algorithms.com/string/prefix-function.html
 
 */
+
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -33,7 +35,39 @@ using namespace std;
 int main()
 {
   __;
-  
+  // Find a pattern in a string
+  int test;
+  cin>>test;
+  while(test--)
+  {
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    vector<int> p(n+1); // the pi array (dp array)
+    for(int i=1;i<n;i++)
+    {
+      int c = p[i-1];
+      while(c>0 && s[c]!=s[i]) c = p[c-1];
+      if(s[c]==s[i]) c++;
+      p[i] = c;
+    }
+
+    vector<int> ans(n + 1);
+    for (int i = 0; i < n; i++) ans[p[i]]++;
+    for (int i = n-1; i > 0; i--) ans[p[i-1]] += ans[i];
+    for (int i = 0; i <= n; i++) ans[i]++;
+
+    int max1 = -1, max2 = -1;
+    // pr(ans);
+    for(int i=1;i<=n;i++) max1 = max(max1,ans[i]);
+    for(int i=n;i>=1;i--) if(max1==ans[i]) {max2 = i;break;}
+
+    cout<<s.substr(0,max2)<<endl;
+
+  }
   return 0;
 }
+
+
 

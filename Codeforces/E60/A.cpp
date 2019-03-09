@@ -1,8 +1,3 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -33,7 +28,19 @@ using namespace std;
 int main()
 {
   __;
-  
+  int n;
+  cin>>n;
+  int max1 = -1;
+  vector<int> v(n);
+  for(int i=0;i<n;i++) {cin>>v[i]; max1 = max(max1,v[i]);}
+  int count = 0,max2 = 0;
+  for(int i=0;i<n;i++)
+  {
+    if(v[i]!=max1) {max2 = max(max2,count);count = 0;}
+    else count++;
+  }
+  max2 = max(max2,count);
+  cout<<max2<<endl;
   return 0;
 }
 

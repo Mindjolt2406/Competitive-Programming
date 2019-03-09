@@ -1,8 +1,4 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
+// Incomplete
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -24,7 +20,7 @@ IIIT Bangalore
 #define t6(a,b,c,d,e,f)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<" "<<#e<<" : "<<e<<" "<<#f<<" : "<<f<<endl
 #define GET_MACRO(_1,_2,_3,_4,_5,_6,NAME,...) NAME
 #define t(...) GET_MACRO(__VA_ARGS__,t6,t5, t4, t3, t2, t1)(__VA_ARGS__)
-#define _ cerr<<"here"<<endl;
+#define _ cout<<"here"<<endl;
 #define __ {ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);}
 
 
@@ -33,7 +29,29 @@ using namespace std;
 int main()
 {
   __;
-  
+  int h;
+  cin>>h;
+  while(h--)
+  {
+    string s,t;
+    cin>>s>>t;
+    int n = s.size(),m = t.size();
+    vector<vector<int> > v(n+1,vector<int>(m+1));
+    for(int i=1;i<=m;i++) v[0][i] = s[i]-'0';
+    for(int i=1;i<=n;i++) v[i][0] = t[i]-'0';
+    for(int i=1;i<=n;i++)
+    {
+      for(int j=1;j<=m;j++)
+      {
+        
+      }
+    }
+    int q;
+    while(q--)
+    {
+
+    }
+  }
   return 0;
 }
 

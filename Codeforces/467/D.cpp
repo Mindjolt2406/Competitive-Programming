@@ -1,8 +1,3 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
@@ -30,10 +25,34 @@ IIIT Bangalore
 
 using namespace std;
 
+void dfs(vector<int>*adj, int u, vector<int> &colour, vector<int> &visited)
+{
+  visited[u] = 1;
+  for(int i=0;i<adj[u].size();i++)
+  {
+    if(!visited[adj[u][i]]) dfs(adj,adj[u][i], colour, visited);
+    if(colour[u]==1) colour[adj[u][i]] 
+  }
+}
+
 int main()
 {
   __;
-  
+  int n,m;
+  cin>>n>>m;
+  vector<int>*adj = new vector<int>[n];
+  for(int i=0;i<n;i++)
+  {
+    int a = 0;
+    cin>>a;
+    for(int j=0;j<a;j++) {int b; cin>>b; adj[i].push_back(b-1);}
+  }
+
+  int src;
+  cin>>src;
+
+  vector<int> colour(n), visited(n);
+
   return 0;
 }
 

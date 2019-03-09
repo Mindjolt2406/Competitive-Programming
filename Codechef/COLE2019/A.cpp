@@ -9,6 +9,7 @@ IIIT Bangalore
 #define pu push_back
 #define INF 1000000001
 #define MOD 1000000007
+#define EPS 1e-6
 #define ll long long int
 #define ld long double
 #define vi vector<int>
@@ -30,10 +31,49 @@ IIIT Bangalore
 
 using namespace std;
 
+ld max(ld x, ld y)
+{
+  if(x>y) return x;
+  return y;
+}
+
 int main()
 {
   __;
-  
+  int t;
+  cin>>t;
+  while(t--)
+  {
+    int boo = 0;
+    ld x1,x2,x3,t1,t2,t3;
+    cin>>x1>>t1>>x2>>t2>>x3>>t3;
+    if((x1+x2) < x3 || !(t1<=t3 && t3<=t2)) {cout<<"NO"<<endl; continue;}
+    else if(abs(t3-t2)<EPS) 
+    {
+      if(x2>=x3) cout<<"YES"<<endl;
+      else cout<<"NO"<<endl;
+      continue;
+    }
+    else if(abs(t3-t1)<EPS)
+    {
+      if(x1>=x3) cout<<"YES"<<endl;
+      else cout<<"NO"<<endl;
+      continue;
+    }
+
+    ld beg = 0, end = x1, total = x3;
+    ld t = ((t3-t1))/(t2-t3);
+    while(beg<=end)
+    {
+      ld mid = (beg+end)/2;
+      ld x = mid, y = x*t;
+      if(x>x1 || y>x2) end = mid-0.001;
+      else if(x+y>=x3) {boo = 1; break;}
+      else beg = mid+0.001;
+    }
+    if(boo) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
+  }
   return 0;
 }
 

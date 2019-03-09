@@ -33,7 +33,42 @@ using namespace std;
 int main()
 {
   __;
-  
+  int t;
+  cin>>t;
+  while(t--)
+  {
+    int n,k;
+    cin>>n>>k;
+    vector<int> v(n), w(k);
+    for(int i=0;i<n;i++) cin>>v[i];
+    reverse(v.begin(),v.end());
+
+    int max1 = -1, index = -1;
+    for(int i=0;i<v.size();i++) max1 = max(max1, v[i]);
+    for(int i=0;i<v.size();i++) if(v[i]==max1) {index = i;break;}
+    
+    for(int i=0;i<k;i++) cin>>w[i];
+    
+    vector<bool> dp(n);
+    for(int i=0;i<n;i++) dp[i] = false;
+    dp[index] = true;
+    for(int i=index+1;i<v.size();i++)
+    {
+      bool boo = 1;
+      for(int j=0;j<w.size();j++)
+      {
+        if(i>=w[j]) 
+        {
+          // if(i-w[j]<index) dp[i] = true;
+          boo&=dp[i-w[j]];
+        }
+      }
+      // t(boo,i);
+      if(!boo) dp[i] = 1;
+    }
+    if(dp[n-1]) cout<<"Chef"<<endl;
+    else cout<<"Garry"<<endl;
+  }
   return 0;
 }
 
