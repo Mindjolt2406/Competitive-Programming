@@ -1,0 +1,50 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=latex 2018.12.14)  10 AUG 2019 22:58
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**\begin{document}
+No file texput.aux.
+\openout1 = `texput.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 0.
+LaTeX Font Info:    ... okay on input line 0.
+
+! LaTeX Error: The font size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+<*> \begin{document}
+                    
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+<*> \begin{document}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+ 
+Here is how much of TeX's memory you used:
+ 3 strings out of 494092
+ 322 string characters out of 6163548
+ 52704 words of memory out of 5000000
+ 3780 multiletter control sequences out of 15000+600000
+ 3640 words of font info for 14 fonts, out of 8000000 for 9000
+ 319 hyphenation exceptions out of 8191
+ 7i,0n,6p,31b,28s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.

@@ -1,0 +1,137 @@
+{
+	// Place your Questions workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+"Power": 
+{
+	"scope": "c++",
+	"prefix": ["power"],
+	"body":[
+		"ll power(ll x, ll y, ll p)",
+		"{",
+			"ll res = 1;      // Initialize result",
+			"x = x % p;  // Update x if it is more than or",
+			"while (y > 0)",
+			"{",
+				"	if (y & 1)",
+							"res = (res*x) % p;",
+					"y = y>>1; // y = y/2",
+					"x = (x*x) % p;",
+			"}",
+			"return res;",
+		"}",
+	],
+	"description": "Modular Exponentiation"
+},
+
+"Gauss":
+{
+	"scope": "c++",
+	"prefix": "gauss",
+	"body":[
+		"ld max(ld x, ld y)
+		{
+			if(x>y) return x;
+			return y;
+		}
+
+		int gauss(vector<vector<ld> > &v, vector<ld> &ans, int &rank)
+		{
+			int n = v.size(), m = v[0].size()-1;
+			rank = 0;
+			int row = 0;
+			vector<bool> check(m);
+
+			for(int col = 0;row<n && col<m;col++)
+			{
+				// For each row check if v[i][i] = 0. If it is, swap with a non-zero element
+				if(abs(v[row][col]) < EPS) 
+				{
+					// Curing cuarable breakdowns by taking the max pivot
+					// This is called partial pivoting, it's a stable algorithm, i.e. the error doesn't blow up
+					bool boo = false;
+					ld max1 = v[row][col];
+					int index = row;
+					for(int i=row+1;i<n;i++)
+					{
+						if(abs(v[i][col]) > EPS)
+						{
+							max1 = max(max1,v[i][col]);
+							if(max1 == v[i][col]) index = i;
+						} 
+					}
+
+					// Case where it's a non-curable breakdown. Ignore and move on
+					if(!boo) continue;
+					swap(v[index],v[row]);
+				}
+
+				// This col is independent
+				check[col] = true;
+				ld pivot = v[row][col];
+				for(int i=row+1;i<n;i++)
+				{
+					ld temp = v[i][col]/pivot;
+					for(int j=0;j<=m;j++)
+					{
+						v[i][j] -= v[row][j]*temp;
+					}
+				}
+
+				row++;
+			}
+
+			rank = row;
+			// Back propagation
+			for(int i=row-1;i>=0;i--)
+			{
+				ld sum1 = 0;
+				for(int j=n-1;j>i;j--)
+				{
+					sum1 += ans[j]*v[i][j];
+				}
+
+				ld temp = v[i][m] - sum1;
+				temp /= v[i][i];
+
+				ans[i] = temp;
+			}
+
+			for(int i=0;i<m;i++) if(check[i]) rank++;
+			// Checking whether we have no wrong solutions
+			// If we do, there's no solution
+			for(int i=n-1;i>=0;i--)
+			{
+				ld sum1 = 0;
+				for(int j=m-1;j>=0;j--)
+				{
+					sum1 += ans[j]*v[i][j];
+				}
+
+				if((sum1 - v[i][m]) > EPS) return 0;
+			}
+
+			// If any of the columns have not been independent, then there are more variables than needed
+			// Thus there are infinite number of solutions
+			for(int i=0;i<m;i++) if(!check[i]) return INF;
+			
+			// Everything's okay. The answers have been stored in the ans array
+			return 1;
+		}"
+	],
+	"description": "Gaussian Elimination"
+}

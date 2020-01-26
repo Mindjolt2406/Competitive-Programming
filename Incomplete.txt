@@ -2,14 +2,29 @@
 CF
 136 - G
 197 - C
+255 - E
+263 - D
 272 - B
+312 - E
+316 - D (Tree Requests)
+350 - E
+417 - E
 510 - D
+548 - D
+E62 - E
 
 Codechef
 
 NOV LONG - GMEDIAN
 
+Standard
+  Centroid Decmoposition
 
 Spoj
 
-HIST2
+  HIST2
+  MKTHNUM
+
+Timus 
+
+6000

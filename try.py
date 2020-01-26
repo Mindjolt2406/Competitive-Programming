@@ -1,3 +1,8 @@
-import math
-for i in range(40,70):
-	print '%.20f' % math.log(pow(2,i)-1,2)
+l = [0,0,0,0]
+for i in range(25):
+  print i
+  m = raw_input().split()
+  # print m,m[0]
+  l[int(m[0])-1]+=1
+
+print l

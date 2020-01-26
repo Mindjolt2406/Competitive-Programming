@@ -111,11 +111,11 @@ def genRandomWeightedGraph(N, E, L, R, connected = False):
 	return wgraph
 
 if __name__ == '__main__':
-	n = randint(6,10)
-	l = []
-	for i in range(n): l.append(i+1)
-	shuffle(l)
+	n = randint(1,10)
 	print n
+	
 	for i in range(n):
-		print randint(1,3),l[i],randint(1,100)
+		print randint(1,10),
+
+	print ""
 	

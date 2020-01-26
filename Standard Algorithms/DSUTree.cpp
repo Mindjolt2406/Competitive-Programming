@@ -15,11 +15,12 @@
 
 using namespace std;
 
-int count[100001] = {0};
-int colour[100001] = {0};
-bool big[100001] = {false};
-vector<int> adj[100001];
-int sz[100001] = {0};
+const int N = 1e5+1;
+int count[N] = {0};
+int colour[N] = {0};
+bool big[N] = {false};
+vector<int> adj[N];
+int sz[N] = {0};
 
 void add(int u,int p, int k)
 {

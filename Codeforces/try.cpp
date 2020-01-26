@@ -1,63 +1,50 @@
+/*
+Rathin Bhargava
+IIIT Bangalore
+ 
+*/
 #include<bits/stdc++.h>
-using namespace std;
-
+#define mt make_tuple
+#define mp make_pair
+#define pu push_back
+#define INF 1e15
+#define MOD 1000000007
+#define ll long long int
+#define ld long double
 #define fi first
 #define se second
-#define pb push_back
-#define mp make_pair
-#define lli long long int
-#define ld long double
-
-#define pi 3.141592653589793238
-#define INF 1000000001
-#define MOD 1000000007
-
-int main(){
-    int n;
-    cin >> n;
-    int ta=0,tb=0;
-    vector<int> a,b;
-    for(int i=0;i<n;i++){
-        int kk;
-         cin >> kk;
-         a.push_back(kk);
-     }
-    for(int i=0;i<n;i++){
-        int kk;
-        cin >> kk;
-        b.push_back(kk);
+#define all(v) v.begin(),v.end()
+#define pr(v) { for(int i=0;i<v.size();i++) { v[i]==INF? cout<<"INF " : cout<<v[i]<<" "; } cout<<endl;}
+#define t1(x)                cerr<<#x<<" : "<<x<<endl
+#define t2(x, y)             cerr<<#x<<" : "<<x<<" "<<#y<<" : "<<y<<endl
+#define t3(x, y, z)          cerr<<#x<<" : " <<x<<" "<<#y<<" : "<<y<<" "<<#z<<" : "<<z<<endl
+#define t4(a,b,c,d)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<endl
+#define t5(a,b,c,d,e)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<" "<<#e<<" : "<<e<<endl
+#define t6(a,b,c,d,e,f)          cerr<<#a<<" : "<<a<<" "<<#b<<" : "<<b<<" "<<#c<<" : "<<c<<" "<<#d<<" : "<<d<<" "<<#e<<" : "<<e<<" "<<#f<<" : "<<f<<endl
+#define GET_MACRO(_1,_2,_3,_4,_5,_6,NAME,...) NAME
+#define t(...) GET_MACRO(__VA_ARGS__,t6,t5, t4, t3, t2, t1)(__VA_ARGS__)
+#define _ cerr<<"here"<<endl;
+#define __ {ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);}
+ 
+using namespace std;
+template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
+template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+ 
+int main()
+{
+    map<int,vector<int> > d;
+    d[1] = {4,3,2,7,5,3};
+    d[0] = {3,1,2,34,52};
+    _;
+    for(auto it = d.begin();it!=d.end();it++)
+    {
+        sort(it->se.begin(),it->se.end());
+        // t(it);
+        // t(d[1],d[2]);
+        _;
     }
-    sort(a.begin(),a.end());
-    sort(b.begin(),b.end());
-    for(int i=0;i<a.size();i++) cout<<a[i]<<" ";cout<<endl;
-    for(int i=0;i<b.size();i++) cout<<b[i]<<" ";cout<<endl;
-    for(int i=0;i<2*n;i++){
-        if((a.size()>0 && b.size()>0 && a[a.size()-1]>b[b.size()-1] && i%2 == 0)||(b.empty() && !a.empty())){
-            cout<<"A ";
-            cout<<a[a.size()-1]<<" "<<a.size()<<endl;
-            ta+=a[a.size()-1];
-            a.pop_back();
+    
+    for(auto it : d) t(it.fi,it.se);
 
-        }
-        else if(b.size()>0 && i%2 == 0){
-            cout<<"B"<<endl;
-            cout<<"in: "<<b.size()<<endl;
-            b.pop_back();
-            cout<<"out: "<<b.size()<<endl;
-        }
-        else if((b.size()>0 && a.size()>0 && b[b.size()-1]>a[a.size()-1] && i%2 == 1)||(a.empty()&&!b.empty())){
-            cout<<"B ";
-            cout<<b[b.size()-1]<<" "<<b.size()<<endl;
-            tb+=b[b.size()-1];
-            b.pop_back();
-        }
-        else if(a.size()>0  && i%2 == 1)
-        {
-          cout<<"A"<<endl;
-          cout<<"in: "<<a.size()<<endl;
-          a.pop_back();
-          cout<<"out: "<<a.size()<<endl;
-        }
-    }
-    cout << ta-tb << endl;
 }

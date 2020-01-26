@@ -32,11 +32,11 @@ int main()
 {
   // Find a pattern in a string
   int test;
-  sc(test);
+  cin>>test;
   while(test--)
   {
     string s,t;
-    scr(s);scr(t);
+    cin>>s>>t;
     int n = s.size(), m = t.size();
     s = t+"$"+s;
     vector<int> p(n+m+1); // the pi array (dp array)
