@@ -1,0 +1,8 @@
+{
+  "workbench.colorTheme": "Abyss",
+  "files.associations": {
+    "vector": "cpp",
+    "queue": "cpp",
+    "valarray": "cpp"
+  }
+}

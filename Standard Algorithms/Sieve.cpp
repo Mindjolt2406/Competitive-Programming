@@ -1,6 +1,7 @@
 #include<bitset>
 #include<iostream>
 #include<vector>
+#include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
 #define pu push_back
@@ -32,14 +33,24 @@ void sieve(ll upperbound)
 bool isPrime(ll N)
 {
   if(N<size) return bs.test(N);
-  for(int i=0;i<primes.size();i++) if(N%primes[i]==0) return false;
+  for(int i=0;i<prime.size();i++) if(N%prime[i]==0) return false;
   return true;
 }
 
+// int main()
+// {
+//   sieve(10000000);
+//   ll n;
+//   cin>>n;
+//   cout<<isPrime(n)<<endl;
+// }
+
 int main()
 {
-  sieve(10000000);
-  ll n;
-  cin>>n;
-  cout<<isPrime(n)<<endl;
+  ll n = 470598593461;
+  for(int i=2;i<sqrt(n)+1;i++)
+  {
+    if(isPrime(i) && n%i == 0 && isPrime(n/i)) cout << i << " " << n/i << endl;
+  }
+
 }

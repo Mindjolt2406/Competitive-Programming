@@ -94,7 +94,6 @@ int main()
   dfs();
   for(int i=0;i<k;i++)
   {
-    pair<int,int> par = inv[par[i]];
     pair<int,int> p = inv[i];
     if(p.fi == par.fi)
     {
@@ -109,7 +108,7 @@ int main()
   }
 
   vector<vector<int> > hor(n),ver(m);
-  
+  for(int )
 
   return 0;
 }

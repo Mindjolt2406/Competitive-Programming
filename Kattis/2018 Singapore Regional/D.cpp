@@ -40,7 +40,7 @@ int main()
   cin >> n >> k;
   vector<int> v(n);
 
-  
+  int mask = 
   return 0;
 }
 

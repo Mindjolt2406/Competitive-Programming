@@ -1,18 +1,15 @@
-/*
-Rathin Bhargava
-IIIT Bangalore
-
-*/
 #include<bits/stdc++.h>
 #define mt make_tuple
 #define mp make_pair
 #define pu push_back
 #define INF 1000000001
 #define MOD 1000000007
+#define EPS 1e-6
 #define ll long long int
 #define ld long double
 #define fi first
 #define se second
+#define all(v) v.begin(),v.end()
 #define pr(v) { for(int i=0;i<v.size();i++) { v[i]==INF? cout<<"INF " : cout<<v[i]<<" "; } cout<<endl;}
 #define t1(x)                cerr<<#x<<" : "<<x<<endl
 #define t2(x, y)             cerr<<#x<<" : "<<x<<" "<<#y<<" : "<<y<<endl
@@ -25,58 +22,88 @@ IIIT Bangalore
 #define _ cerr<<"here"<<endl;
 #define __ {ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);}
 
-
 using namespace std;
+template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
+template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+
+const int N = 3e5+10;
+vector<int> adj(N);
+vector<int> v(N);
+vector<int> depth(N);
+
+int cnt = 1;
+int dep_idx = -1;
+int vert = -1;
+int max_dep = 0;
+
+void dfs(int u = 0,int p = -1, int allow = v[1],int dep = 0)
+{
+  adj[u] = p;
+  depth[u] = dep;
+  // t(u,p,allow,dep,dep_idx);
+  if(max_dep == dep) return;
+
+  for(int i=0;i<allow;i++)
+  {
+    if(i == 0) dfs(cnt++,u,v[dep+2],dep+1);
+    else 
+    {
+      if(dep == dep_idx-1 && vert == -1) 
+      {
+        vert = cnt;
+        // t(vert);
+        dfs(vert,u,0,dep+1);
+        cnt++;
+      }
+      else dfs(cnt++,u,0,dep+1);
+    }
+  }
+}
 
 int main()
 {
   __;
-  int h;
-  cin>>h;
-  int n = 0;
-  vector<int> v(h+1);
-  for(int i=0;i<=h;i++)
-  { 
-    cin>>v[i];
-    n+=v[i];
+  int n;
+  cin >> n;
+  max_dep = n;
+  int sum1 = 0;
+  for(int i=0;i<=n;i++)
+  {
+    cin >> v[i];
+    sum1 += v[i];
   }
 
-  int index = -1,index2 = -1;
-  vector<int> w(h+1),ans(n),height(n);
-  for(int i=0;i<v.size();i++) 
+  bool boo = false;
+  for(int i=0;i<n;i++)
   {
-    if(v[i]>1) index = i;
-    w[i] = i;
-  }
-
-  for(int i=0;i<=h;i++) ans[i] = i;
-  if(index==-1) {cout<<"perfect"<<endl;return 0;}
-  else
-  {
-    int count = h+1;
-    for(int i=1;i<v.size();i++)
+    if(v[i] != 1 && v[i+1] != 1) 
     {
-      for(int j=1;j<v[i];j++)
-      {
-        t(count,i);
-        ans[count] = i-1;
-        height[count] = i;
-        count++;
-      }
+      boo = true;
+      dep_idx = i;
+      break;
     }
   }
 
-  cout<<"ambiguous"<<endl;
-  for(int i=0;i<ans.size();i++) cout<<ans[i]<<" "; cout<<endl;
-  int a = index, b = -1;
-  for(int i=0;i<height.size();i++) if(height[i]==index) b = i;
-  for(int i=0;i<ans.size();i++) 
+  if(boo)
   {
-    if(ans[i]==a) ans[i] = b;
-    else if(ans[i]==b) ans[i] = a;
+    cout << "ambiguous" << endl;
+    dfs();
+    for(int i=0;i<sum1;i++) cout << adj[i]+1 << " ";
+    cout << endl;
+    bool boo = false;
+    for(int i=0;i<sum1;i++)
+    {
+      if(depth[i] == dep_idx+1 && !boo)
+      {
+        boo = true;
+        cout << vert+1 << " ";
+      }
+      else cout << adj[i]+1 << " ";
+    }
+    cout << endl;
   }
-  for(int i=0;i<ans.size();i++) cout<<ans[i]<<" "; cout<<endl;
+  else cout << "perfect" << endl;
 
   return 0;
 }
-

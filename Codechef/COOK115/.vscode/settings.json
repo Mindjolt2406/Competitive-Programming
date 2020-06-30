@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "set": "cpp",
+    "vector": "cpp",
+    "__split_buffer": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "queue": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "stack": "cpp"
+  }
+}

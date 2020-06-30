@@ -22,4 +22,41 @@ struct pair_hash {
 // Hashing strings - Rabin Karp rolling hash
 
 ---------------------------------------------------------------------------------------------------------------------------------
+// Nice random stuff
+// How would you add the sequence 1,2,3, ... , n at some index i of some array? i.e. arr[i] += 1; arr[i+1] += 2 ; .... ;
+// Use a BIT!
+// Here's the code
 
+void increasing(int n, int i,  BIT &bit)
+{
+  bit.inc(i,1);
+  bit.inc(n+i,-1);
+  bit.inc(n+i,-n);
+  bit.inc(n+1+i,n);
+}
+
+void remove_increasing(int n,int i, BIT &bit)
+{
+  bit.inc(i,-1);
+  bit.inc(n+i,1);
+  bit.inc(n+i,n);
+  bit.inc(n+1+i,-n);
+}
+
+void decreasing(int n,int i,BIT &bit)
+{
+  bit.inc(i,n);
+  bit.inc(i+1,-n);
+  bit.inc(i+1,-1);
+  bit.inc(n+i+1,1);
+}
+
+void remove_decreasing(int n,int i,BIT &bit)
+{
+  bit.inc(i,-n);
+  bit.inc(i+1,n);
+  bit.inc(i+1,1);
+  bit.inc(n+i+1,-1);
+}
+
+// ----------------------------------------------------------------------------------------------

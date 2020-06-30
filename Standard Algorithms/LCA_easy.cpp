@@ -1,7 +1,7 @@
 const int N = 2e5+1;
 vector<int> adj[N] = {};
-int MAXN = 2e5+1,MAXLOG = 25;
-int parent[N][25] = {0};
+int MAXLOG = 25;
+vector<vector<int> >  parent(N,vector<int>(MAXLOG,-1));
 int height[N] = {0};
 
 

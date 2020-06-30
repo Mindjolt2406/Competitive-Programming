@@ -84,18 +84,18 @@ int main()
   dp[0][0][0] = 1;
   dp[0][1][0] = 1;
 
-  for(int i=0;i<n-1;i++)
+  for(int i=1;i<n;i++)
   {
-    for(ll j=0;j<=i;j++)
+    for(ll j=0;j<=i+1;j++)
     {
       ll inc;
-      inc = (v[i+1]-v[i])*j;
       for(int k=0;k<=total;k++)
       {
         // t(i,j,k);
         // Add to an existing set
 
         // Leave the sets open
+        inc = (v[i]-v[i-1])*j;
         if(k-inc>=0) dp[i][j][k] += (dp[i-1][j][k-inc]*j)%MOD;
         dp[i][j][k] %= MOD;
 
@@ -129,7 +129,7 @@ int main()
 
   cout << sum1 << endl;
 
-  for(int i=0;i<n ;i++) for(int j=0;j<n;j++) for(int k=0;k<=total;k++) t(i,j,k,dp[i][j][k]);
+  // for(int i=0;i<n ;i++) for(int j=0;j<n;j++) for(int k=0;k<=total;k++) t(i,j,k,dp[i][j][k]);
   return 0;
 }
 
