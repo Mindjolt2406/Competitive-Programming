@@ -16,24 +16,6 @@ using namespace std;
 
 int main()
 {
-  string s1,s2,s;
-  // getline(cin,s1);
-  // getline(cin,s2);
-  // printf("%c\n",getline(cin,s));
-  // cout<<getline(cin,s)<<endl;
-  getline(cin,s1);
-  char boo;
-  getline(cin,s2);
-  while(1)
-  {
-    // Code
-    cout<<1<<endl;
-    if(getline(cin,s))
-    {
-      getline(cin,s1);
-      getline(cin,s2);
-    }
-    else break;
-  }
+  
   return 0;
 }

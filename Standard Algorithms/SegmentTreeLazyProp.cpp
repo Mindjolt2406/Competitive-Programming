@@ -9,7 +9,7 @@ typedef struct node
   }
   void update(ll value)
   {
-    ans+=value;
+    ans += value;
   }
   void combine(node &n1, node &n2)
   {

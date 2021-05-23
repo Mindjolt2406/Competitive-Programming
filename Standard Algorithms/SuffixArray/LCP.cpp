@@ -108,27 +108,57 @@ void suffixArray(string &s, vector<int> &ansPos)
   }
 }
 
+void lcpArray(vector<int> &suffixArray,string &s,vector<int> &lcp)
+{
+  // $ has been already added to the string because of suffixArray
+  int n = suffixArray.size();
+  vector<int> inv(n);
+  for(int i=0;i<n;i++) inv[suffixArray[i]] = i;
+
+  lcp.resize(n);
+  int prevMatch = 0;
+  for(int i=0;i<n-1;i++)
+  {
+    // t(i,inv[i]);
+    // lcp[i] -> prefix of ans[i] and ans[i+1]
+    // We're gonna do the longest suffixes first
+    // So, we are calculating lcp[inv[i]]
+    // lcp[inv[i]] = LCP(i,ans[inv[i]+1])
+    if(inv[i] == n-1) continue;
+    int strIndex1 = i;
+    int strIndex2 = suffixArray[inv[i]+1];
+
+    prevMatch = max(prevMatch-1,0);
+    while(s[strIndex1+prevMatch] == s[strIndex2+prevMatch]) // Breaks when encounters $. Don't worry about index errors
+    {
+      prevMatch++;
+    }
+    lcp[inv[i]] = prevMatch;
+  }
+}
+
 int main()
 {
   __;
   string s;
   cin >> s;
   int n = s.size();
-  vector<int> ans;
-  suffixArray(s,ans);
+  vector<int> suffixArr,lcp;
+  suffixArray(s,suffixArr);
+  lcpArray(suffixArr,s,lcp);
 
-  vector<int> inv(n+1);
-  for(int i=0;i<=n;i++) inv[ans[i]] = i;
+  // suffixArr.erase(suffixArr.begin());
+  lcp.erase(lcp.end()-1);
+  for(auto it : suffixArr) cout << it << " "; cout << endl;
+  for(auto it : lcp) cout << it << " "; cout << endl;
 
-  vector<int> lcp(n+1);
-  for(int i=0;i<n;i++)
-  {
-    lcp[i] // prefix of ans[i] and ans[i+1]
-    // lcp[0] = 0
-    // Let 
-    // We're gonna do the longest suffixes first
-    // So, we are calculating lcp[inv[i]]
-    // lcp[inv[i]] = LCP(i,ans[inv[i]+1])
-  }
+  // abab$
+
+  // 0 -> $
+  // 2 -> ab$
+  // 0 -> abab$
+  // 1 -> b$
+  // 0 -> bab$
+
   return 0;
 }

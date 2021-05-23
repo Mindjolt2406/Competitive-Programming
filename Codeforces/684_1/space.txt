@@ -1,0 +1,20 @@
+  0B	./.HFS+ Private Directory Data
+1.0K	./home
+  0B	./Developer
+ 15G	./usr
+1.0K	./net
+  0B	./.PKInstallSandboxManager
+2.5M	./bin
+  0B	./Network
+1.0M	./sbinprivate/var/db/datadetectors: Permission denied
+8.8G	./Library
+7.7G	./System
+7.9G	./private
+  0B	./.volPermission denied
+ 39G	./Users
+ 17G	./Applications
+  0B	./opt
+4.5K	./dev
+7.8M	./Volumes
+  0B	./cores
+ 95G	.

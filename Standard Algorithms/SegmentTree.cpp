@@ -1,97 +1,131 @@
-#include<iostream>
-#include<cmath>
-#include<algorithm>
-//#define NUL -1000000001
-#define NUL 0
-using namespace std;
-
-void print(int* l,int n)
+typedef struct node
 {
-  int prod = 0;
-  for(int i=0;i<n;i++)
-  {
-    if(i+1==pow(2,prod))
-    {
-      cout<<endl;
-      prod++;
-    }
-    cout<<l[i]<<" ";
+  // Any variable
+  int beg = 0,end = 0;
+  // Default for null nodes
+  ll ans = INF;
+
+  void assign(ll value) {
+    ans = value;
   }
-  cout<<endl;
-}
 
-int build(int* tree,int*l,int pos,int beg,int end,int k,int n)
-{
-  cout<<"pos: "<<pos<<" beg: "<<beg<<" end: "<<end<<" pos-k/2: "<<pos-k/2<<" k: "<<k<<endl;
-  if(beg<=end)
-  {if (pos-k/2>=n)return NUL;
-  if(beg==end ){tree[pos] = l[pos-k/2];return l[pos-k/2];}
-  // else if(beg==end) return NUL;
-  int mid = (beg+end)/2;
-  tree[pos] = max(build(tree,l,2*pos+1,beg,mid,k,n),build(tree,l,2*pos+2,mid+1,end,k,n));
-  return tree[pos];}
-  else return NUL;
-}
-
-int update(int*tree,int index,int key,int pos,int beg,int end)
-{
-  // cout<<"pos: "<<pos<<" beg: "<<beg<<" end: "<<end<<endl;
-  if(beg==end){tree[pos] = key;return tree[pos];}
-  int mid = (beg+end)/2;
-  if(index<=mid) tree[pos] = max(update(tree,index,key,2*pos+1,beg,mid),tree[2*pos+2]);
-  else tree[pos] = max(tree[pos*2+1],update(tree,index,key,2*pos+2,mid+1,end));
-  return tree[pos];
-}
-
-int find(int* tree,int l,int r,int beg,int end,int pos,int k,int n)
-{
-  //3 cases Go left, go right, split up
-  int mid = (beg+end)/2;
-  cout<<"beg: "<<beg<<" end: "<<end;
-  cout<<" mid: "<<mid<<endl;
-  if(l==beg&&r==end) return tree[pos];
-  if(r<=mid) return find(tree,l,r,beg,mid,2*pos+1,k,n);
-  else if(l>mid) return find(tree,l,r,mid+1,end,2*pos+2,k,n);
-  else
-  {
-    return max(find(tree,l,mid,beg,mid,2*pos+1,k,n),find(tree,mid+1,r,mid+1,end,2*pos+2,k,n));
+  void update(ll value) {
+    ans += value;
   }
-}
 
-int main()
-{
-  // cout<<"There are 2 queries to find the max, 1 <index> <insert value>, 2 <Left> <Right> "<<endl;
-  int n;
-  cin>>n;
-  int l[n];
-  for(int i=0;i<n;i++)cin>>l[i];
-  int k = 2*pow(2,ceil(log(n)/log(2.0)))-1;
-  int* tree = (int*)calloc(k,sizeof(int));
-  for(int i=0;i<k;i++)tree[i] = NUL;
-  build(tree,l,0,0,k/2-1,k,n);
-  for(int i=0;i<k;i++)cout<<tree[i]<<" ";
-  cout<<endl;
-  int q;
-  cin>>q;
-  for(int i=0;i<q;i++)
-  {
-    int q1;
-    cin>>q1;
-    if(q1==1)
-    {
-      int index,value;
-      cin>>index>>value;
-      update(tree,index-1,value,0,0,k/2-1);
-      // for(int j=0;j<k;j++)cout<<tree[j]<<" ";
-      // cout<<endl;
-    }
-    else if(q1==2)
-    {
-      int beg,end;
-      cin>>beg>>end;
-      beg-=1;end-=1;
-      cout<<find(tree,beg,end,0,k/2-1,0,k,n)<<endl;
-    }
+  void combine(node &n1, node &n2) {
+    ans = min(n1.ans, n2.ans);
   }
-  return 0;
-}
+
+  ll query() {
+    return ans;
+  }
+
+} node;
+
+typedef struct SegTree {
+    int n;
+    vector<ll> a;
+    vector<ll> lazy;
+    vector<node> tree;
+
+    void init(int n) {
+        this -> n = n;
+        a.resize(n);
+        lazy.resize(4*n);
+        tree.resize(4*n);
+        // build(0, 0, n-1);
+    }
+
+    void init(vector<ll> &v) {
+        this -> n = v.size();
+        init(n);
+        for(int i = 0; i < n; i++) a[i] = v[i];
+        build(0, 0, n-1);
+    }
+
+    void build(int pos, int l , int r) {
+        // if(l>=n || r<0) return;
+        tree[pos].beg = l, tree[pos].end = r;
+        if(l==r) {
+            tree[pos].assign(a[l]);
+            return;
+        }
+
+        int left = (pos<<1)+1, right = left+1, mid = (l+r)>>1;
+        build(left,l,mid); build(right,mid+1,r);
+
+        tree[pos].combine(tree[left],tree[right]);
+    }
+
+    // Point updates
+    // void update(int index, int value, int pos = 0, int l = 0,int r = n-1) {
+    //   if(l==r) {
+    //     tree[pos].update(value);
+    //     return;
+    //   }
+
+    //   int left = (pos<<1)+1, right = left+1, mid = (l+r)>>1;
+
+    //   if(index<=mid) update(index,value,left,l,mid);
+    //   else update(index,value,right,mid+1,r);
+
+    //   tree[pos].combine(tree[left],tree[right]);
+    // }
+
+    // Range update
+    void upd(int pos, int l,int r,ll x) {
+        lazy[pos]+=x; // Associative lazy function
+        tree[pos].update(x); // How much this contributes to the node
+    }
+
+    void shift(int pos, int l, int r)
+    {
+        if(lazy[pos] && l<r) {
+            int mid = (l+r)>>1, left = (pos<<1)+1, right = left+1;
+            upd(left,l,mid,lazy[pos]);
+            upd(right,mid+1,r,lazy[pos]);
+            lazy[pos] = 0; // Identity of the function
+        }
+    }
+
+    void update(int x,int y,ll val, int pos, int l, int r) {
+        // t(l,r,x,y);
+        if(l>y || r<x) return;
+        if(l>=x && r<=y) {
+            upd(pos, l, r, val);
+            return;
+        }
+
+        shift(pos,l,r);
+        int left = (pos<<1)+1, right = left+1, mid = (l+r)>>1;
+
+        update(x,y,val,left,l,mid);
+        update(x,y,val,right,mid+1,r);
+
+        tree[pos].combine(tree[left], tree[right]);
+    }
+
+    void update(int x, int y, ll val) {
+        update(x, y, val, 0, 0, n-1);
+    }
+
+    node query(int x,int y,int pos, int l, int r) {
+        node ans,n1,n2;
+        // if(l>y || r<x) return ans;
+        if(r<x || l>y) return ans;
+        if(l>=x && r<=y) return tree[pos];
+
+        shift(pos,l,r); // Only needed for lazy propagation
+
+        int left = (pos<<1)+1, right = left+1, mid = (l+r)>>1;
+
+        n1 = query(x,y,left,l,mid); n2 = query(x,y,right,mid+1,r);
+        ans.combine(n1,n2);
+        return ans;
+    }
+
+    node query(int x, int y) {
+        return query(x, y, 0, 0, n-1);
+    }
+} SegTree;

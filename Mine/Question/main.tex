@@ -1,0 +1,115 @@
+\documentclass[a4 paper]{article}
+
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[colorlinks=true, urlcolor=blue,  linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[probability, sets, primitives, logic, adversary, advantage, operators, landau, mm, asymptotics]{cryptocode}
+\usepackage{mdframed}
+
+\setlength\parindent{0pt}
+\setlength\parskip{0.5em}
+
+\newtheorem{solution}{Solution}
+
+% Math commands
+%\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\keyspace}{\ensuremath{\mathcal{K}}}
+\newcommand{\mssgspace}{\ensuremath{\mathcal{M}}}
+%\newcommand{\adv}{\ensuremath{\mathcal{A}}}
+\newcommand{\cipherspace}{\ensuremath{\mathcal{C}}}
+\newcommand{\gen}{\ensuremath{\mathsf{Gen}}}
+\newcommand{\Gen}{\ensuremath{\mathsf{Gen}}}
+\newcommand{\PPT}{\ensuremath{\mathsf{PPT}}}
+\newcommand{\Enc}{\ensuremath{\mathsf{Enc\ }}}
+\newcommand{\Dec}{\ensuremath{\mathsf{Dec\ }}}
+\newcommand{\cpa}{\ensuremath{\mathsf{CPA\ }}}
+\newcommand{\cca}{\ensuremath{\mathsf{CCA\ }}}
+\newcommand{\privk}[2]{\ensuremath{\mathsf{PrivK}^{#1}_{#2}}}
+\newcommand{\defeq}{\stackrel{\mathclap{\mbox{\text{\tiny{def}}}}}{=}}
+\newcommand{\bitstring}[1]{%
+    \ifstrequal{#1}{1}%
+    {\ensuremath{\set{0, 1}}}%
+    {\ensuremath{{\set{0, 1}}^{#1}}}%
+}
+\newcommand{\functiondef}[3]{\ensuremath{#1: #2 \rightarrow #3}}
+
+\begin{document}
+
+\pagestyle{myheadings}
+\thispagestyle{plain}
+\newpage
+\setcounter{page}{1}
+\noindent
+\begin{center}
+    \framebox{%
+    \vbox{\vspace{2mm}
+    \hbox to 6.28in {\textbf{ \hfill {\small \today}}}
+    \vspace{6mm}
+    \hbox to 6.28in {{\Large \centering \hfill Game on Tree  \hfill}}
+    \vspace{6mm}
+    \hbox to 6.28in {\textit{} \hfill {\rm {Author: Rathin Bhargava }}}}
+    \vspace{2mm}}
+\end{center}
+\vspace*{4mm}
+
+\begin{section}{Problem Statement}
+Alice and Bob love playing games. Today, they invented a new game.  They took a tree rooted at $1$. Then, they took $K$ tokens and spread them across the tree at nodes $v_i$, $1 \leq i \leq K$. Both the players play the game in turns. Alice starts playing first. 
+On each move, a player can take a token and move it to one of its children. If a node has no children, that token cannot be moved at all. A player loses if they don't have any moves to play. Who wins the game? 
+\end{section}
+
+\begin{section}{Input Format}
+The first line are two space separated integers N, K. 
+The $i^{th}$ of the next $N-1$ lines comprise of two space separated integers $a_i$, $b_i$ giving the edges of the tree.
+Finally, The last line has K space separated integers $v_j$, giving the nodes with the tokens. Note that a node may have more than one token. 
+\end{section}
+
+\begin{section}{Output Format}
+If Alice wins, output "Alice" (without quotes)
+If Bob wins, output "Bob" (without quotes)
+\end{section}
+
+\begin{section}{Constraints} 
+$ 1 \leq K \leq N \leq 10^5 $ \\
+$ 1 \leq a_i, b_i \leq N $ \\
+$ 1 \leq v_j \leq K$
+\end{section}
+
+\begin{section}{Samples}
+
+Testcase 1: \\ 
+1 1 \\
+1 \\
+
+Output:  \\
+Bob \\
+
+Explanation: \\
+The tree consists of only $1$ node. There are no moves for Alice to play. Hence, Bob wins \\
+
+Testcase 2: \\
+3 1 \\
+1 2 \\
+1 3 \\
+1 \\
+
+Output: \\
+Alice \\
+
+Explanation: \\
+If Alice moves the token to the of the children, Bob does not have a chance to move. \\
+
+Testcase 3: \\
+3 2 \\
+1 2 \\
+1 3 \\
+1 1 \\
+
+Output: \\
+Bob \\
+
+Explanation: \\
+Alice moves one token from node $1$ to a child. That token cannot be moved now. Bob moves the second token from the root to one of the children. The second token cannot be moved now. Since Alice has no moves to play, Bob wins. \\
+
+\end{section}
+\end{document}

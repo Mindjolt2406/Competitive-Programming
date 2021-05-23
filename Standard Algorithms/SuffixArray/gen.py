@@ -111,7 +111,7 @@ def genRandomWeightedGraph(N, E, L, R, connected = False):
 	return wgraph
 
 if __name__ == '__main__':
-	print genRandomString(10,'a','b')
-	print 100
-	for i in range(100):
-		print genRandomString(5,'a','b')
+	n = randint(10,200)
+	print n,9
+	for i in range(n): print randint(1,2),
+	

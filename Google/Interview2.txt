@@ -1,0 +1,98 @@
+struct TreeNode
+{
+ 	TreeNode* leftNode;
+  	TreeNode* rightNode;
+  	int value;
+}
+
+// void PrintInOrder(TreeNode* root);
+
+void PrintInOrder(TreeNode* root)
+{
+ 	if(root == NULL) return;
+  	
+  	PrintInOrder(root -> leftNode);
+  	
+  	cout << value << " ";
+  
+  	PrintInOrder(root -> rightNode);
+}
+
+  4
+2    6
+1 3  5   7
+  
+    
+    
+ 1 2 3 4 5 6 7
+    
+Push Left node
+Compute Left
+Compute root
+Push right
+
+     
+6 5
+    
+void PrintInOrderIter(TreeNode* root)
+{
+ 	if(root == NULL) return;
+  	
+    Stack<TreeNode*> stack;
+    
+    // Initialise stack
+    TreeNode* tempRoot = root;
+    while(tempRoot != NULL)
+    {
+     	stack.push(tempRoot); 	
+      	tempRoot = tempRoot->left;
+    }
+    
+    while(!stack.empty())
+    {
+      TreeNode* tempRoot = stack.top();
+      stack.pop();
+ 
+      if(tempRoot == NULL) continue;
+      
+      cout << tempRoot -> value << " ";
+      
+      TreeNode* tempRightRoot = tempRoot -> right;
+      while(tempRightRoot != NULL) 
+      {
+        stack.push(tempRightRoot); 
+        tempRightRoot = tempRightRoot->left;
+      }
+    }
+    
+}
+
+// Given an input array of {from_id, to_id} pairs representing edges in a directed graph, how would you compute the number of reciprocated edges?
+// {1, 2} and {2,1} are reciprocated edges
+//
+// int numReciprocatedEdges(vector<Edge> edges);
+// numReciprocatedEdges({{1,2}, {2,1}})  --> 2
+
+struct Edge {
+  int src;
+  int dst;
+  
+  // Hash() is defined.
+};
+
+int numReciprocatedEdges(vector<Edge> edges)
+{
+ 	int numEdges = 0;
+  	unordered_set<Edge> edgeHashMap;
+  	
+  	for(auto edge : edges)
+    {
+      	Edge reverseEdge(edge.dest, edge.src);
+      	if(edgeHashMap.count(reverseEdge)) numEdges +=2 ;
+      	edgeHashMap.insert(edge); 
+    }
+  
+  	return numEdges;
+}
+
+

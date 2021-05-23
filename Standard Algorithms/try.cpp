@@ -33,11 +33,11 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 int main()
 {
   __;
-  int a = 1; 
-  int b = a++;
-  t(a,b);
-  int c = ++a;
-  t(a,c);
+  set<int> s;
+  s.insert(1);
+  s.insert(2);
+  s.insert(3);
+  cout <<*s.upper_bound(2) << endl;
   return 0;
 }
 

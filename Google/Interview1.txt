@@ -1,0 +1,126 @@
+Hi, can you see me?
+  
+  This is Long from Google NYC office
+  
+  
+  typedef struct TreeNode {
+    int pIndex;  // the index of parent in the vector
+    Data data;   // data payload, not important
+  }
+  
+vector<TreeNode> tree;
+
+    0
+  1.  2
+ 3 4. 5
+      
+      
+ index. |. 0.  1.  2.  3.  4.  5
+ pIndex |  -1  0.  0.  1.  1.  2
+  data. | ----------------------
+      
+  index. |. 0.  1.  2.  3.  4
+ pIndex |  -1   0.  0.  0.  1
+  data. | ----------------------
+      
+ void deleteTreeNodeByIndex(vector<TreeNode>& tree, int currIndex) {
+      // 1. delete the tree node at given index
+      // 2. the children of deleted node become the children of its parent while the rest of the strcture remains the same
+      // 3. reduce the tree size by 1
+    
+      // Change the pIndex of the children to the parent
+      // If the pIndex of a node > inputIndex, pIndex--
+      
+      // Delete the node, vector.erase();
+      
+      int currParIndex = tree[currIndex].pIndex;
+      int TreeSize = tree.size();
+      
+      for(int i=index+1;i<TreeSize;i++)
+      {
+       	if(tree[i].pIndex == currIndex) 
+        {
+         	tree[i].pIndex = currParIndex; 
+        }
+        else
+        {
+         	if(tree[i].pIndex > currIndex)
+            {
+             	tree[i].pIndex--; 
+            }
+        }
+      }
+      
+      // Delete the currIndex node from the vector tree
+      tree.erase(currIndex);
+ }
+
+    0
+  1.   2
+ 3 4.  5
+ 6.    7
+      
+   void deleteSubTreeByIndex(vector<TreeNode>& tree, int currIndex) {
+      // 1. Instead of deleting a single node, we'd like to delete the entire subtree rooted at given currIndex
+      // 2. The rest of the tree structure remains the same
+      // 3. the new tree size is reduced by the total number of nodes deleted.
+      
+      
+      // 1. Have a hash table of nodes to be deleted
+      	// 1a. Initally the table contains currIndex
+      	// 1b. If pIndex of the node is in the table, the node will be deleted. Add the node index to the hashtable
+      // O(n)
+      
+      // 2. Take care of other nodes
+      // O(n)
+      
+      // 3. Deleting all nodes in decending order
+      	// Deleting 1 node takes O(n)
+      	// multiple nodes 
+      // O(n2)
+      
+      
+      // New O(n) approach 
+      // Find the undeleted nodes
+      // HashMap to store oldIndex -> index 
+      // If Update pIndex of every node with the HashMap[pIndex]
+      
+      int treeSize = tree.size();
+      unordered_set<int> deletedNodes;
+      deletedNodes.insert(currIndex);
+      for(int i=index+1;i<treeSize;i++)
+      {
+       	if(deletedNodes.count(tree[i].pIndex))
+        {
+         	deletedNodes.insert(i); 
+        }
+      }
+      
+      vector<TreeNode> newTree;
+      unordered_map<int,int> indexMap;
+      for(int  i=0;i<treeSize;i++)
+      {
+       	if(deletedNodes.count(i)) continue;
+        indexMap[i] = newTree.size();
+        newTree.insert(tree[i]);
+      }
+      
+   	
+    	for(int i=0;i<newTree.size();i++)
+        {
+         	newTree[i].pIndex = indexMap[pIndex]; 
+        }
+      
+      // Assume this does a deep copy
+      tree = newTree;
+    }
+
+
+
+
+
+
+
+
+
+
