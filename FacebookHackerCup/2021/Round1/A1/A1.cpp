@@ -30,9 +30,32 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void solve() {
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    
+    string processedString;
+    for (auto c : s) 
+        if (c != 'F')
+            processedString += c;
+    
+    int counter = 0;
+    for (int i = 1; i < processedString.size(); i++) {
+        counter += (processedString[i] != processedString[i-1]);
+    }
+
+    cout << counter << "\n";
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    for (int h = 1; h <= t; h++) {
+        cout << "Case #" << h << ": ";
+        solve();
+    }
     return 0;
 }

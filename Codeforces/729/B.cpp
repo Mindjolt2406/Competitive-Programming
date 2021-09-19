@@ -25,14 +25,33 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
-template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
-template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
+template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
 
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        ll a, b, n;
+        cin >> n >>  a >> b;
+        if(n == 1) {
+            cout << "Yes" << endl;
+            continue;
+        }
+        ll currProd = 1;
+        bool flag = false;
+        if(currProd % b == n % b) flag = true;
+        while(currProd <= n && a > 1) {
+            // t(currProd, b);
+            if(currProd % b == n % b) flag = true;
+            currProd *= a;
+            // t(currProd);
+        }
+        
+        cout << (flag ? "Yes" : "No") << endl;
+    }
     return 0;
 }

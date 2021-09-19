@@ -30,9 +30,41 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+ll max(ll x, ll y) {return x > y ? x : y;}
+ll min(ll x, ll y) {return x < y ? x : y;}
+
+void solve() {
+    ll n, k, y;
+    cin >> n >> k >> y;
+    vector<ll> v(n);
+    for(auto &x : v) cin >> x;
+
+    ll cost = 0;
+
+    sort(v.begin(), v.end());
+    reverse(v.begin(), v.end());
+
+    int i = 1;
+    for ( ; i < min(2 * k, n); i+=2) {
+        cost += min(y, v[i] + v[i-1]);
+    }
+    
+    i--;
+
+    while (i < n) {
+        cost += v[i];
+        i++;
+    }
+
+    cout << cost << endl;
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        solve();
+    }
     return 0;
 }

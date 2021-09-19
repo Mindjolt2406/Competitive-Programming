@@ -30,9 +30,56 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+// dp[i][j] = dp[i-1][j+1] + max(arr[i], arr[j]) 
+//             OR dp[i-2][j] + arr[i]
+//             OR dp[i][j+2] + arr[j]
+
+ll recur(ll i, ll j, map<pair<int, int>, ll> &dp, vector<ll> &arr, int n, bool toMin) {
+    if (i < -1 || j > n)
+        return 0;
+
+    if (dp.count(make_pair(i, j)))
+        return dp[make_pair(i, j)];
+        
+    if (i == -1 && j == n)
+        return dp[make_pair(i, j)] = 0;
+        
+    ll res = (toMin ? INF : 0);
+    if (i >= 0) {
+        if (toMin)
+            res = min(res, recur(i-1, j, dp, arr, n, toMin ^ 1) + arr[i]);
+        else 
+            res = max(res, recur(i-1, j, dp, arr, n, toMin ^ 1) + arr[i]);
+    }
+    if (j < n) {
+        if (toMin)
+            res = min(res, recur(i, j+1, dp, arr, n, toMin ^ 1) + arr[i]);
+        else 
+            res = max(res, recur(i, j+1, dp, arr, n, toMin ^ 1) + arr[i]);
+    }
+    
+    return dp[make_pair(i, j)] = res;
+}
 
 int main() {
     __;
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
     
+    ll minAns = INF;
+
+    map<pair<int, int>, ll> dp;
+    for (int i = 0; i < n; i++) {
+        minAns = min(minAns, recur(i-1, i+1, dp, v, n, false));
+    }
+
+    for (auto it : dp) {
+        t(it.fi, it.se);
+    }
+
+    cout << minAns << endl;
     return 0;
 }

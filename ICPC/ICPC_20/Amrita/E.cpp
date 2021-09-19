@@ -33,6 +33,41 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<int> v(2 * n);
+        for (int i = 0; i < 2 *n; i++) cin >> v[i];
+
+        bool done = true;
+        for(int i = 1; i < 2 * n; i++) {
+            t(i);
+            multiset<int> s;
+            for(int j = 1; j < 2 * n; j++) s.insert(v[j]);
+            int target = v[0] + v[i];
+            s.erase(s.find(v[i]));
+
+            bool flag = true;
+            while (!s.empty()) {
+                int u = *s.begin();
+                if (s.count(target - u) != 0) {
+                    s.erase(s.find(u));
+                    s.erase(s.find(target-u));
+                } else {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag) {
+                break;
+            }
+        }
+
+        if (done) cout << "PERFECT" << endl;
+        else cout << "IMBALANCED" << endl;
+    }
     return 0;
 }

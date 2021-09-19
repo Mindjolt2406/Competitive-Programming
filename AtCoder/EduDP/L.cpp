@@ -3,7 +3,7 @@
 #define mt make_tuple
 #define mp make_pair
 #define pu push_back
-#define INF 1000000001
+#define INF 1e18
 #define MOD 1000000007
 #define EPS 1e-6
 #define ll long long int
@@ -30,9 +30,43 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+ll recur(int left, int right, vector<vector<ll>> &dp, vector<ll> &v, bool toMax) {
+    if (left > right)
+        return 0;
+    if (dp[left][right] != -1)
+        return dp[left][right];
+    
+    auto &result = dp[left][right];
+    result = (toMax ? -1 : INF);
+
+    if (toMax) {
+        result = max(result, recur(left + 1, right, dp, v, toMax ^ 1) + v[left]);
+        result = max(result, recur(left, right - 1, dp, v, toMax ^ 1) + v[right]);
+    } else {
+        result = min(result, recur(left, right - 1, dp, v, toMax ^ 1));
+        result = min(result, recur(left + 1, right, dp, v, toMax ^ 1));
+    }
+    
+    return result;
+}
 
 int main() {
     __;
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
+    
+    vector<vector<ll>> dp(n, vector<ll>(n, -1));
+    ll finalAns = recur(0, n-1, dp, v, true);
+
+    ll totalSum = 0;
+    for (auto x : v)
+        totalSum += x;
+
+    // X - Y = X - (totalSum - X) = 2 * X - totalSum;
+    cout << 2 * finalAns - totalSum << endl;
     
     return 0;
 }

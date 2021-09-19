@@ -33,6 +33,24 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
-    
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for(int i = 0; i < n; i++) cin >> v[i];
+
+    ll prev = 0, next = v[0];
+    ll cost = abs(v[0]);
+    // t(prev, next);
+    for(int i = 1; i < n; i++) {
+        if(v[i] - prev <= next) {
+            next = v[i] - prev;
+        } else {
+            prev = v[i] - next;
+        }
+        cost += abs(prev) + abs(next);
+        // t(i, prev, next);
+    }
+
+    cout << cost << endl;
     return 0;
 }

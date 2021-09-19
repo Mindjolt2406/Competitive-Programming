@@ -11,7 +11,6 @@
 #define fi first
 #define se second
 #define all(v) v.begin(),v.end()
-#define pr(v) { for(int i=0;i<v.size();i++) { v[i]==INF? cout<<"INF " : cout<<v[i]<<" "; } cout<<endl;}
 #define t1(x)                cerr<<#x<<" : "<<x<<endl
 #define t2(x, y)             cerr<<#x<<" : "<<x<<" "<<#y<<" : "<<y<<endl
 #define t3(x, y, z)          cerr<<#x<<" : " <<x<<" "<<#y<<" : "<<y<<" "<<#z<<" : "<<z<<endl
@@ -33,6 +32,31 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
+    int n;
+    cin >> n;
+    vector<ld> prob(n);
+    for (auto &x : prob)
+        cin >> x;
     
+    // dp[i][j] -> Probability of tossing the first i coins with exactly j heads.
+    vector<vector<ld>> dp(n, vector<ld>(n + 1));    
+    dp[0][0] = (1 - prob[0]);
+    dp[0][1] = prob[0];
+
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j <= n; j++) {
+            // Current coin gets heads.
+            if (j > 0)
+                dp[i][j] += prob[i] * dp[i-1][j-1];
+            dp[i][j] += (1 - prob[i]) * dp[i-1][j];
+        }
+    }
+
+    ld finalAns = 0;
+    for (int j = (n+1)/2; j <= n; j++) 
+        finalAns += dp[n-1][j];
+    
+    cout << fixed << setprecision(10);
+    cout << finalAns << endl;
     return 0;
 }

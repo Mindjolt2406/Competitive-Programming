@@ -30,9 +30,58 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void impossible() {
+    cout << -1 << endl;
+}
+
+void solve() {
+    ll x, y;
+    cin >> x >> y;
+    if(y % x) {
+        impossible();
+        return;
+    }
+
+    y /= x;
+    ll i = 1;
+    set<ll> s;
+    while(i <= 2e18) {
+        s.insert(i);
+        i <<= 1;
+        i++;
+    }
+
+    ll cnt = 0;
+    set<int> streak;
+    while(y > 0) {
+        auto it = s.upper_bound(y);
+        if(it == s.begin()) {
+            impossible();
+            return;
+        }
+        
+        it--;
+        int bitCount = __builtin_popcountll(*it);
+        if(streak.count(bitCount)) {
+            impossible();
+            return;
+        } else {
+            streak.insert(bitCount);
+        }
+        cnt += bitCount;
+        y -= *it;
+    }
+
+    cnt += (int)streak.size() - 1;
+    cout << cnt << endl;
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        solve();
+    }
     return 0;
 }

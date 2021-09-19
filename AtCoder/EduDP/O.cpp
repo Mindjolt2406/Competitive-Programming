@@ -33,6 +33,36 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
+    int n;
+    cin >> n;
+    vector<vector<ll>> mat(n, vector<ll>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> mat[i][j];
     
+    int maskSize = (1 << n);
+    vector<vector<ll>>  dp(n, vector<ll>(maskSize));
+
+    for (int i = 0; i < n; i++) {
+        for (int mask = 0; mask < maskSize; mask++) {
+            if (__builtin_popcount(mask) != i)
+                continue;
+            for (int j = 0; j < n; j++) {
+                int newMask = (mask | (1 << j));
+                if (i == 0) {
+                    // Only mask == 0 can come here.
+                    dp[i][newMask] = mat[i][j];
+                } else {
+                    // If the jth bit is not set
+                    if (!((1 << j) & mask)) {
+                        dp[i][newMask] += (!mat[i][j] ? 0 : dp[i-1][mask]);
+                        dp[i][newMask] %= MOD; 
+                    }
+                }
+            }
+        }
+    }
+
+    cout << dp[n-1][maskSize-1] << endl;
     return 0;
 }

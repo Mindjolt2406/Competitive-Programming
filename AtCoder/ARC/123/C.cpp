@@ -30,9 +30,89 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+map<ll, int> dp;
+
+int recur(ll n) {
+    if(dp.count(n)) {
+        return dp[n];
+    }
+
+    if(n == 0) return dp[0] = 0;
+    if(n <= 3) return dp[n] = 1;
+
+    bool flag_3 = true, flag_0 = false;
+    int index_0 = 0;
+    string s = to_string(n);
+    for(auto it : s) {
+        if(it == '0') {
+            flag_0 = true;
+            break;
+        }
+        if(it > '3') {
+            flag_3 = false;
+            break;
+        }
+        index_0++;
+    }
+
+    // t(n, flag_0, flag_3);
+
+    if(flag_0) {
+        string temp = s.substr(0, index_0);
+        ll templl = stoll(temp);
+        templl--;
+        string t = to_string(templl);
+        for(int i = index_0; i < s.size(); i++) {
+            t += '3';
+        }
+
+        ll subNum = stoll(t);
+        // t(n, subNum);
+        return dp[n] = 1 + recur(n - subNum);
+    }
+    
+    if(flag_3) {
+        // t(n, 1);
+        return dp[n] = 1;
+    }
+
+    // Get biggest base 3 number below n (1 indexed)
+    string t;
+    bool flag = true;
+    for(auto it : s) {
+        if(!flag) {
+            t += '3';
+            continue;
+        }
+        if(it > '3') {
+            t += '3';
+            flag = false;
+        } else { // no '0'
+            t += it;
+        }
+    }
+
+    ll subNum = stoll(t);
+    // t(n, subNum);
+    return dp[n] = 1 + recur(n - subNum);
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        ll n;
+        cin >> n;
+        cout << recur(n) << endl;
+    }
+    int max1 = 0;
+    for(int i = 1; i <= 100000; i++) {
+        ll tmp = recur(i);
+        if(tmp > max1) t(i, tmp);
+        max1 = max(max1, (int)tmp);
+    }
+
+    t(max1);
     return 0;
 }

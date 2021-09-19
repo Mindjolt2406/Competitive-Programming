@@ -30,9 +30,35 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void solve() {
+    int n, m, a, b;
+    cin >> n >> m >> a >> b;
+    if (min(a, b) < (n + m - 1)) {
+        cout << "Impossible\n";
+        return;
+    }
+
+    cout << "Possible\n";
+
+    vector<vector<int>> v(n, vector<int>(m, 1));
+    v[0][0] = a - (n + m - 2);
+    v[0][m-1] = b - (n + m - 2);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cout << v[i][j] << " ";
+        }
+        cout << "\n";
+    }
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    for (int h = 1; h <= t; h++) {
+        cout << "Case #" << h << ": ";
+        solve();
+    }
     return 0;
 }

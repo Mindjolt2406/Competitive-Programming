@@ -25,14 +25,59 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
-template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
-template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
+template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
 
+ll gcd(ll a, ll b) 
+{ 
+  if (a == 0) 
+    return b; 
+  return gcd(b % a, a); 
+}
+
+ll get(ll a, ll b, ll n) {
+    // Number of numbers of the type a mod b <= n from 1 to n
+    // t(a, b, n);
+    if(a >= b) return 0;
+    if(n % b >= a % b) {
+        return n / b + 1;
+    } else {
+        return n / b;
+    }
+}
 
 int main() {
     __;
-    
+    vector<ll> prefLcm(43);
+    prefLcm[1] = 1;
+    prefLcm[2] = 2;
+    for(int i = 3; i < 43; i++) {
+        prefLcm[i] = (i * prefLcm[i-1]) / gcd(i, prefLcm[i-1]);
+    }
+
+    int t;
+    cin >> t;
+    while(t--) {
+        ll n;
+        cin >> n;
+        ll cnt = 0;
+        for(int i = 1; prefLcm[i] <= n; i++) {
+            ll modVal = prefLcm[i];
+            ll p = prefLcm[i+1];
+            int tempCnt = 0;
+            for(ll j = 1; j <= i; j++) {
+                // t(i+1, j);
+                ll temp = get(modVal * j, p, n) % MOD;
+                tempCnt += temp;
+                // t(temp);
+                cnt += ((i+1) * (temp)) % MOD;
+                cnt %= MOD;
+            }
+            // t(i+1, tempCnt);
+        }
+
+        cout << cnt << endl;
+    }
     return 0;
 }

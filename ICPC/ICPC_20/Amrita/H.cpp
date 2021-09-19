@@ -30,9 +30,18 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void solveDP(vector<int> &v) {
+    
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        int n;
+        cin >> n;
+
+    }
     return 0;
 }

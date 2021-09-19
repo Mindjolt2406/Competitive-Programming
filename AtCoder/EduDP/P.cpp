@@ -30,9 +30,46 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void dfs(vector<vector<int>>& adj, vector<vector<ll>>& dp, int u = 0, int p = -1) {
+    bool isLeaf = false;
+    for (auto child : adj[u]) {
+        if (child - p) {
+            dfs(adj, dp, child, u);
+        }
+    }
+
+    // If leaf, this is the base case. Otherwise we update the DP values.
+    dp[u][0] = dp[u][1] = 1;
+    for (auto child : adj[u]) {
+        if (child - p) {
+            // Take the vertex -> Product of all children when they're not taken.
+            dp[u][1] *= dp[child][0];
+            dp[u][1] %= MOD;
+
+            // Don't take the vertex. Then each child can or cannot be taken.
+            dp[u][0] *= (dp[child][0] + dp[child][1]) % MOD;
+            dp[u][0] %= MOD;
+        }
+    }
+}
 
 int main() {
     __;
-    
+    int n;
+    cin >> n;
+    vector<vector<int>> adj(n);
+
+    for (int i = 0; i < n-1; i++) {
+        int x, y;
+        cin >> x >> y;
+        x--; y--;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+
+    vector<vector<ll>> dp(n, vector<ll>(2));
+    dfs(adj, dp);
+
+    cout << (dp[0][0] + dp[0][1]) % MOD << endl;
     return 0;
 }

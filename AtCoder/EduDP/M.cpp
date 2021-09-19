@@ -30,9 +30,37 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+ll query(vector<vector<ll>> &pref, int i, int j, int val) {
+    int right = j, left = max(j - val, 0);
+    return (pref[i-1][right] - (left == 0 ? 0 : pref[i-1][left-1]) + MOD) % MOD; 
+}
 
 int main() {
     __;
-    
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(n);
+    for (auto &x : v)
+        cin >> x;
+
+    vector<vector<ll>> dp(n, vector<ll>(k+1));
+    vector<vector<ll>> pref(n, vector<ll>(k+1));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= k; j++) {
+            if (i == 0) {
+                if (j <= v[0])
+                    dp[i][j] = 1;
+            } else
+                dp[i][j] = query(pref, i, j, v[i]);
+            
+            // Update the prefix sum DP
+            pref[i][j] = (dp[i][j] + (j == 0 ? 0 : pref[i][j-1])) % MOD;
+        }
+    }
+
+    cout << dp[n-1][k] << endl;
     return 0;
 }
+
+
+// dp[i][j] = sum_(dp[i-1][j-0] + .... + dp[i-1][max(j-v[i], 0)])

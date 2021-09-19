@@ -30,9 +30,49 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+vector<vector<ll>> multiply(vector<vector<ll>> &A, vector<vector<ll>> &B) {
+    int N = A.size();
+    vector<vector<ll>> res(N, vector<ll>(N));
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            for (int k = 0; k < N; k++) {
+                res[i][j] += (A[i][k] * B[k][j]) % MOD;
+                res[i][j] %= MOD;
+            }
+        }
+    }
+
+    return res;
+}
 
 int main() {
     __;
+    int n;
+    ll k;
+    cin >> n >> k;
+    vector<vector<ll>> mat(n, vector<ll>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> mat[i][j];
     
+    vector<vector<ll>> curr(n, vector<ll>(n));
+    for (int i = 0; i < n; i++)
+        curr[i][i] = 1;
+
+    while (k) {
+        if (k & 1) {
+            curr = multiply(curr, mat);
+        }
+
+        mat = multiply(mat, mat);
+        k >>= 1;
+    }
+
+    ll finalAns = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            finalAns = (finalAns + curr[i][j]) % MOD;
+    
+    cout << finalAns << endl;
     return 0;
 }

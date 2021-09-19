@@ -33,6 +33,18 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
-    
+    ll x, y, z;
+    cin >> x >> y >> z;
+    if(2 * y > x + z) {
+        cout << 2 * y - x - z << endl;
+    } else if(2 * y == x + z) {
+        cout << 0 << endl;
+    } else {
+        if((x + z) & 1) {
+            cout << ((x + z - 2 * y + 1) / 2) + 1 << endl;
+        } else {
+            cout << (x + z - 2 * y) / 2 << endl;
+        }
+    }
     return 0;
 }

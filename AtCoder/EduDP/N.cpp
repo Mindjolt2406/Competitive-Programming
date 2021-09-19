@@ -3,7 +3,7 @@
 #define mt make_tuple
 #define mp make_pair
 #define pu push_back
-#define INF 1000000001
+#define INF 1e18
 #define MOD 1000000007
 #define EPS 1e-6
 #define ll long long int
@@ -30,9 +30,47 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+ll queryPref(int left, int right, vector<ll>& pref) {
+    return pref[right] - (left == 0 ? 0 : pref[left - 1]);
+}
+
+ll recur(int left, int right, vector<ll> &arr, vector<vector<ll>> &dp, vector<ll>& pref) {
+    if (left == right)
+        return dp[left][right] = 0;
+
+    if (left > right)
+        return dp[left][right] = INF;
+    
+    if (dp[left][right] != INF)
+        return dp[left][right];
+    
+    ll &result = dp[left][right];
+
+    for (int mid = left; mid < right; mid++) {
+        // First half is [left, mid]. Second half is (mid, right].
+        result = min(result, recur(left, mid, arr, dp, pref) + recur(mid + 1, right, arr, dp, pref) + queryPref(left, right, pref));
+    }
+
+    return result;
+}
 
 int main() {
     __;
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
     
+    vector<ll> pref(n);
+
+    pref[0] = v[0];
+    for (int i = 1; i < n; i++)
+        pref[i] = pref[i-1] + v[i];
+    
+    vector<vector<ll>> dp(n, vector<ll>(n, INF));
+    ll finalAns = recur(0, n-1, v, dp, pref);
+
+    cout << finalAns << endl;
     return 0;
 }

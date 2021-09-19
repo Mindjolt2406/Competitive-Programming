@@ -30,9 +30,67 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+bool query(vector<int> &indices, int mid, int i) {
+    cout << "? ";
+    for(int i = 0; i < mid; i++) {
+        cout << indices[i] << " ";
+    }
+    cout << i << endl;
+
+    int ans;
+    cin >> ans;
+    if (ans == -1) exit(0);
+    
+    return (ans > 1);
+}
+
+void solve() {
+    int n, q;
+    cin >> n >> q;
+
+    vector<int> indices;
+    indices.pu(1);
+    vector<int> finalAns(n);
+    finalAns[0] = 1;
+
+    for (int i = 2; i <= n; i++) {
+        int beg = 1, end = indices.size(), ans = -1;
+        while (beg <= end) {
+            int mid = (beg + end) >> 1;
+            bool freqTwo = query(indices, mid, i);
+            if (freqTwo) {
+                ans = mid;
+                end = mid - 1;
+            } else {
+                beg = mid + 1;
+            }
+        }
+
+        if (ans == -1) {
+            indices.pu(i);
+            finalAns[i - 1] = i;
+        } else {
+            finalAns[i - 1] = finalAns[indices[ans - 1] - 1];
+        }
+    }
+
+    cout << "! ";
+    for(auto it : finalAns) {
+        cout << it << " ";
+    }
+    cout << endl;
+
+    int check;
+    cin >> check;
+    if (check == -1) exit(0);
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
     return 0;
 }

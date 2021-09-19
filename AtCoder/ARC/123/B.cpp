@@ -33,6 +33,32 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
-    
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n), c(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    for(int i = 0; i < n; i++) cin >> b[i];
+    for(int i = 0; i < n; i++) cin >> c[i];
+
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    sort(c.begin(), c.end());
+
+    int i = 0, j = 0, k = 0;
+    int cnt = 0;
+    while(i < n && j <n && k < n) {
+        if(a[i] >= b[j]) {
+            j++;
+            continue;
+        }
+        if(b[j] >= c[k]) {
+            k++;
+            continue;
+        }
+        cnt++;
+        i++; j++; k++;
+    }
+
+    cout << cnt << endl;
     return 0;
 }

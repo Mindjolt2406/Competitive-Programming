@@ -30,9 +30,38 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void fill(vector<int> &v, int i, int j, int val) {
+    if (i > j) return;
+
+    int mid = (i + j) >> 1;
+    v[mid] = val;
+    fill(v, i, mid - 1, val - 1);
+    fill(v, mid + 1, j, val - 1);
+}
+
+void solve() {
+    int n;
+    cin >> n;
+    int k = 1;
+    int cnt = 1;
+    while (k < n) {
+        k <<= 1;
+        k++;
+        cnt++;
+    }
+
+    vector<int> v(k);
+    fill(v, /* i */ 0, /* j */ k, /* val */ cnt);
+
+    for(int i = 0; i < n; i++) cout << v[i] << " "; cout << endl;
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        solve();
+    }
     return 0;
 }

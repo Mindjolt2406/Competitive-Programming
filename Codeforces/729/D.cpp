@@ -3,8 +3,8 @@
 #define mt make_tuple
 #define mp make_pair
 #define pu push_back
-#define INF 1000000001
-#define MOD 1000000007
+#define INF 1e18
+#define MOD 998244353
 #define EPS 1e-6
 #define ll long long int
 #define ld long double
@@ -25,14 +25,39 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
-template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
-template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
+template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
+template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]\n"; return os; } 
 
 
 int main() {
     __;
-    
+    int n;
+    cin >> n;
+    vector<string> v(n);
+    vector<ll> w(n);
+    for(int i = 0; i < n; i++) {
+        cin >> v[i];
+        if(v[i] == "-") {
+            w[i] = INF;
+        } else {
+            cin >> w[i];
+        }
+    }
+
+    for(int k = 0; k < n; k++) {
+        vector<vector<ll> > dp(n, vector<ll>(n, INF));
+        if(w[k] == INF) continue;
+
+        // dp[i][j] = Number of subsequences upto i where the rank of w[k] is j
+        dp[0][0] = 1;
+
+        for(int i = 1; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+
+            }
+        }
+    }
+    cout << cnt << endl;
     return 0;
 }

@@ -106,6 +106,11 @@ typedef struct SegTree {
         tree[pos].combine(tree[left], tree[right]);
     }
 
+    // For point updates.
+    // void update(int x, ll val) {
+    //     update(x, val, 0, 0, n-1);
+    // }
+
     void update(int x, int y, ll val) {
         update(x, y, val, 0, 0, n-1);
     }

@@ -33,6 +33,25 @@ template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a
 
 int main() {
     __;
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(n);
+    for (auto &x : v)
+        cin >> x;
     
+    const int N = 1e5 + 10;
+    vector<bool> dp(N);
+
+    for (int i = 0; i <= k; i++) {
+        bool isLose = true;
+        for (int j = 0; j < n; j++) {
+            if (i - v[j] >= 0) {
+                isLose = isLose && dp[i-v[j]];
+            }
+        }
+        dp[i] = !isLose;
+    }
+
+    cout << (dp[k] ? "First" : "Second") << endl;
     return 0;
 }

@@ -30,9 +30,26 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 
+void solve() {
+    int n, k, h;
+    cin >> n >> k >> h;
+    vector<int> val(n);
+    for (auto &x : val) {
+        cin >> x;
+    }
+
+    vector<vector<int> > adj(n);
+    for (int i = 0; i < n - 1; i++) {
+        
+    }
+}
 
 int main() {
     __;
-    
+    int t;
+    cin >> t;
+    while(t--) {
+        solve();
+    }
     return 0;
 }
