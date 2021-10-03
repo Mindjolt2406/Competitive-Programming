@@ -32,34 +32,80 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+ll max(ll x, ll y) { return x > y ? x : y; }
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
+void getBits(int mask, vector<int> &indices) {
+    int tempMask = mask;
+    int currIndex = 0;
+    while (tempMask) {
+        if (tempMask & 1)
+            indices.push_back(currIndex);
+        tempMask >>= 1;
+        currIndex++;
+    }
+}
+
+ll getCost(int mask, vector<vector<ll>> &mat) {
+    vector<int> indices;
+    getBits(mask, indices);
+
+    ll currCost = 0;
+    for (int i = 0; i < indices.size(); i++) {
+        for (int j = i + 1; j < indices.size(); j++) {
+            currCost += mat[indices[i]][indices[j]];
+        }
     }
 
-    return res;
+    return currCost;
+}
+
+void computeCost(vector<ll> &cost, vector<vector<ll>> &mat, int N) {
+    for (int mask = 0; mask < (1 << N); mask++) {
+        cost[mask] = getCost(mask, mat);
+    }
+}
+
+int constructOriginalSubMask(int subMask, vector<int> &indices) {
+    int newSubMask = 0;
+    int currIndex = 0;
+    int tempSubMask = subMask;
+    while (tempSubMask) {
+        if (tempSubMask & 1)
+            newSubMask = newSubMask | (1 << indices[currIndex]);
+        tempSubMask >>= 1;
+        currIndex++;
+    }
+
+    return newSubMask;
 }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    int n;
+    cin >> n;
+    vector<vector<ll>> v(n, vector<ll>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> v[i][j];
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    vector<ll> cost(1 << n);
+    computeCost(cost, v, n);
+
+    const int N = (1 << n);
+    vector<ll> dp(1 << n);
+    for (int mask = 0; mask < N; mask++) {
+        int notMask = N - 1 - mask;
+        vector<int> indices;
+        getBits(notMask, indices);
+
+        int bitsSize = indices.size();
+        for (int subMask = 0; subMask < (1 << bitsSize); subMask++) {
+            int newSubMask = constructOriginalSubMask(subMask, indices);
+            int newMask = (mask | newSubMask);
+            dp[newMask] = max(dp[newMask], dp[mask] + cost[newSubMask]);
+        }
+    }
+
+    cout << dp[N - 1] << "\n";
     return 0;
 }

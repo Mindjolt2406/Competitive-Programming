@@ -32,34 +32,28 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+ll max(ll x, ll y) { return x > y ? x : y; }
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
+void solve() {
+    int n;
+    cin >> n;
+    int tempN = n;
+    int cnt = 0;
+    while (tempN) {
+        cnt++;
+        tempN >>= 1;
     }
 
-    return res;
+    ll c = (1LL << (cnt - 1));
+    cout << max(n - c + 1, c / 2) << endl;
 }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
-
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
     return 0;
 }

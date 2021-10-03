@@ -32,34 +32,70 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+// Returns number of subarrays with mex <= K.
+ll getNumSubarrays(vector<ll> &v, int K) {
+    vector<int> freq(K + 1);
+    ll counter = 0, n = v.size();
+    ll left = 0, right = 0;
+    ll ans = 0;
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
+    for (; left < n; left++) {
+        while (right < n && counter != K + 1) {
+            // Insert element <= K.
+            if (v[right] <= K) {
+                if (freq[v[right]] == 0) {
+                    counter++;
+                }
+                freq[v[right]]++;
+            }
+            right++;
+        }
+
+        if (counter == K + 1) {
+            ans += (n - right + 1);
+        }
+
+        // Delete element <= K.
+        if (v[left] <= K) {
+            freq[v[left]]--;
+            if (freq[v[left]] == 0)
+                counter--;
+        }
     }
 
-    return res;
+    return (n * (n + 1)) / 2 - ans;
+}
+
+void solve() {
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
+
+    // Binary search over optimal mex value.
+    int beg = 0, end = n + 1, ans = n + 1;
+    // for (int i = beg; i <= end; i++)
+    //     t(i, getNumSubarrays(v, i));
+    while (beg <= end) {
+        int mid = (beg + end) >> 1;
+        ll numSubarrays = getNumSubarrays(v, mid);
+        if (numSubarrays >= k) {
+            end = mid - 1;
+            ans = mid;
+        } else
+            beg = mid + 1;
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
-
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
     return 0;
 }

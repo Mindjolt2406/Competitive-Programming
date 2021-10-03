@@ -32,34 +32,41 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
-
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
-    }
-
-    return res;
-}
-
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    string s, t;
+    cin >> s >> t;
+    int n = s.size();
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    // vector<int> unequal;
+    // for (int i = 0; i < n; i++)
+    //     if (s[i] != t[i])
+    //         unequal.push_back(i);
+
+    // if (unequal.size() >= 3 || unequal.size() == 1)
+    //     cout << "No\n";
+    // else if (unequal.size() == 0)
+    //     cout << "Yes\n";
+    // else {
+    //     int x = unequal[0], y = unequal[1];
+    //     swap(s[x], s[y]);
+    //     cout << (s == t ? "Yes\n" : "No\n");
+    // }
+
+    if (s == t) {
+        cout << "Yes\n";
+        return 0;
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        swap(s[i], s[i + 1]);
+        if (s == t) {
+            cout << "Yes\n";
+            return 0;
+        }
+        swap(s[i], s[i + 1]);
+    }
+
+    cout << "No\n";
     return 0;
 }

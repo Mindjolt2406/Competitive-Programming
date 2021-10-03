@@ -32,34 +32,38 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
-
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
-    }
-
-    return res;
-}
+ll max(ll x, ll y) { return x > y ? x : y; }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    int n;
+    cin >> n;
+    string s = to_string(n);
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    ll max1 = 0;
+    int N = s.size();
+    for (int mask = 0; mask < (1 << N); mask++) {
+        string left, right;
+        for (int j = 0; j < N; j++) {
+            if (mask & (1 << j))
+                left += s[j];
+            else
+                right += s[j];
+        }
+
+        if (left.empty() || right.empty())
+            continue;
+
+        sort(left.begin(), left.end());
+        sort(right.begin(), right.end());
+        reverse(left.begin(), left.end());
+        reverse(right.begin(), right.end());
+
+        int a = stoi(left), b = stoi(right);
+        if (a > 0 && b > 0)
+            max1 = max(max1, 1LL * a * b);
+    }
+
+    cout << max1 << "\n";
     return 0;
 }

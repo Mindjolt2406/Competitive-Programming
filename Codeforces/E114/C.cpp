@@ -4,7 +4,7 @@
 #define mt make_tuple
 #define mp make_pair
 #define pu push_back
-#define INF 1000000001
+#define INF 2e18
 #define MOD 1000000007
 #define EPS 1e-6
 #define ll long long int
@@ -32,34 +32,59 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+ll min(ll x, ll y) { return x < y ? x : y; }
+ll max(ll x, ll y) { return x > y ? x : y; }
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
+void solve(vector<ll> &v, ll totalSum, ll D, ll A) {
+
+    int beg = 0, end = v.size() - 1, ans = v.size();
+    while (beg <= end) {
+        int mid = (beg + end) >> 1;
+        if (v[mid] < D)
+            beg = mid + 1;
+        else {
+            end = mid - 1;
+            ans = mid;
+        }
     }
 
-    return res;
+    ll beforeAns = INF, afterAns = INF;
+    if (ans == v.size()) {
+        ll currSum = totalSum - v[ans - 1];
+        beforeAns = max(A - currSum, 0) + max(D - v[ans - 1], 0);
+    } else if (ans == 0) {
+        ll currSum = totalSum - v[0];
+        afterAns = max(A - currSum, 0) + max(D - v[0], 0);
+    } else {
+        ll currSumAfter = totalSum - v[ans],
+           currSumBefore = totalSum - v[ans - 1];
+        afterAns = max(A - currSumAfter, 0) + max(D - v[ans], 0);
+        beforeAns = max(A - currSumBefore, 0) + max(D - v[ans - 1], 0);
+    }
+
+    cout << min(beforeAns, afterAns) << "\n";
 }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    ll totalSum = 0;
+    for (auto val : v)
+        totalSum += val;
+
+    sort(v.begin(), v.end());
+
+    int q;
+    cin >> q;
+    while (q--) {
+        ll D, A;
+        cin >> D >> A;
+        solve(v, totalSum, D, A);
+    }
     return 0;
 }
