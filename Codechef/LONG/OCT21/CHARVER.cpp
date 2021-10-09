@@ -5,9 +5,10 @@
 #define mp make_pair
 #define pu push_back
 #define INF 1000000001
-#define MOD 1000000007
+#define MOD 998244353
 #define EPS 1e-6
-#define ll long long int
+#define ll int
+#define int long long int
 #define ld long double
 #define fi first
 #define se second
@@ -32,34 +33,90 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+void multiplyMatrixVec(vector<vector<int>> &mat, vector<int> &vec,
+                       vector<int> &res) {
+    int n = vec.size();
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
+    res.resize(n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            res[i] += (1LL * mat[i][j] * vec[j]) % MOD;
+            res[i] %= MOD;
+        }
     }
-
-    return res;
 }
 
-int main() {
-    __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+void multiplyConstantAndAdd(vector<int> &curr, int c, vector<int> &res) {
+    int n = curr.size();
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    for (int i = 0; i < n; i++) {
+        res[i] += (1LL * curr[i] * c) % MOD;
+        res[i] %= MOD;
+    }
+}
+
+void checkZero(vector<int> &res) {
+    bool isZero = true;
+    for (auto it : res)
+        if (it)
+            isZero = false;
+
+    cout << (isZero ? "YES" : "NO") << "\n";
+}
+
+void solve() {
+    int m;
+    cin >> m;
+    vector<int> v(m);
+    for (auto &x : v)
+        cin >> x;
+
+    int n;
+    cin >> n;
+
+    vector<vector<int>> mat(n, vector<int>(n));
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> mat[i][j];
+
+    vector<vector<int>> matMultiply(11);
+    matMultiply[0].resize(n, 1);
+    // matMultiply[0][0] = 1;
+
+    for (int i = 1; i < m; i++)
+        multiplyMatrixVec(mat, matMultiply[i - 1], matMultiply[i]);
+
+    // t(matMultiply);
+
+    vector<int> res(n);
+    for (int i = 0; i < m; i++)
+        multiplyConstantAndAdd(matMultiply[i], v[i], res);
+
+    checkZero(res);
+}
+
+int32_t main() {
+    __;
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
     return 0;
 }
+
+/*
+2
+3
+-2 -5 1
+2
+1 2
+3 4
+3
+-2 -5 1
+2
+1 1
+1 1
+
+*/

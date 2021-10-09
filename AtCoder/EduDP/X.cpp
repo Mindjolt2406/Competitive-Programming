@@ -32,34 +32,47 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
+typedef struct Block {
+    ll weight, solid, value;
+    bool operator<(Block &other) {
+        return (this->weight + this->solid) < (other.weight + other.solid);
     }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+} Block;
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
-    }
+const int MAX_W = 2e4 + 10;
+// const int MAX_W = 6;
 
-    return res;
-}
+ll max(ll x, ll y) { return x > y ? x : y; }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    int n;
+    cin >> n;
+    vector<Block> blocks(n);
+    for (auto &block : blocks)
+        cin >> block.weight >> block.solid >> block.value;
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    sort(blocks.begin(), blocks.end());
+    vector<vector<ll>> dp(n, vector<ll>(MAX_W, -1));
+    dp[0][blocks[0].weight] = blocks[0].value;
+    dp[0][0] = 0;
+    for (int i = 1; i < n; i++) {
+        auto block = blocks[i];
+        dp[i][block.weight] = block.value;
+        for (int j = 0; j < MAX_W; j++) {
+            // Don't take the current block into the solution.
+            dp[i][j] = max(dp[i][j], dp[i - 1][j]);
+            if (j >= block.weight && block.solid + block.weight >= j &&
+                dp[i - 1][j - block.weight] != -1)
+                dp[i][j] =
+                    max(dp[i][j], dp[i - 1][j - block.weight] + block.value);
+        }
+    }
+
+    ll finalAns = 0;
+    for (int weight = 0; weight < MAX_W; weight++)
+        finalAns = max(finalAns, dp[n - 1][weight]);
+
+    cout << finalAns << "\n";
     return 0;
 }

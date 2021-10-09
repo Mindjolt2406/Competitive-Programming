@@ -32,34 +32,56 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
-
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
-    }
-
-    return res;
-}
-
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    int n;
+    cin >> n;
+    vector<int> A(n), B(n);
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    for (auto &x : A)
+        cin >> x;
+
+    for (auto &x : B)
+        cin >> x;
+
+    set<int> s;
+    for (int i = 0; i < n; i++) {
+        s.insert(A[i]);
+        s.insert(A[i] + B[i]);
+    }
+
+    int counter = 0;
+
+    map<int, int> idxToOriginal;
+    map<int, int> originalToIdx;
+    while (!s.empty()) {
+        idxToOriginal[counter] = *s.begin();
+        originalToIdx[*s.begin()] = counter;
+        s.erase(s.begin());
+        counter++;
+    }
+
+    int mulN = idxToOriginal.size();
+
+    vector<int> pref(mulN + 1);
+    for (int i = 0; i < n; i++) {
+        pref[originalToIdx[A[i]]]++;
+        pref[originalToIdx[A[i] + B[i]]]--;
+    }
+
+    map<int, ll> freqMap;
+
+    for (int i = 1; i <= mulN; i++) {
+        pref[i] += pref[i - 1];
+        freqMap[pref[i]] +=
+            1LL * pref[i] * (idxToOriginal[i] - idxToOriginal[i - 1]);
+    }
+
+    t(pref, mulN);
+
+    for (int i = 1; i <= n; i++)
+        cout << freqMap[i] << " ";
+
+    cout << "\n";
     return 0;
 }

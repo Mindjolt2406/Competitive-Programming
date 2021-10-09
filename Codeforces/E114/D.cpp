@@ -32,34 +32,72 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
-
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
-    }
-
-    return res;
-}
-
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
+    int n;
+    cin >> n;
+    vector<vector<int>> v(n);
+    for (int i = 0; i < n; i++) {
+        int currSize;
+        cin >> currSize;
+        v[i].resize(currSize);
+        for (auto &x : v[i])
+            cin >> x;
+    }
 
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    set<pair<ll, vector<int>>> s;
+
+    set<vector<int>> banned;
+    int q;
+    cin >> q;
+    int m = q;
+    while (q--) {
+        vector<int> ban(n);
+        for (auto &x : ban) {
+            cin >> x;
+            x--;
+        }
+
+        banned.insert(ban);
+    }
+
+    ll currSum = 0;
+    vector<int> currVec;
+    for (int i = 0; i < n; i++) {
+        if (v[i].size() > 0) {
+            currVec.push_back(v[i].size() - 1);
+            currSum += v[i].back();
+        }
+    }
+
+    s.insert(mp(currSum, currVec));
+    int insertCount = 1;
+
+    while (true) {
+        // Get the best so far
+        pair<ll, vector<int>> currAns = *(s.rbegin());
+        auto currVal = currAns.fi;
+        auto currVec = currAns.se;
+        s.erase(currAns);
+
+        if (!banned.count(currVec)) {
+            for (auto it : currVec)
+                cout << it + 1 << " ";
+            cout << "\n";
+            break;
+        } else if (insertCount <= 10 * m) {
+            vector<int> currVec = currAns.se;
+            for (int i = 0; i < n; i++) {
+                if (currVec[i] > 0) {
+                    auto tempVec = currVec;
+                    auto tempVal = currVal;
+                    tempVal = tempVal - v[i][tempVec[i]] + v[i][tempVec[i] - 1];
+                    tempVec[i]--;
+                    s.insert(mp(tempVal, tempVec));
+                    insertCount++;
+                }
+            }
+        }
+    }
     return 0;
 }

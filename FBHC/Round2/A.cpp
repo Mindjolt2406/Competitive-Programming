@@ -32,34 +32,76 @@ template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 // clang-format on
 
-ll recur(int index, int modVal, bool isLimit, string &num,
-         vector<vector<vector<ll>>> &dp, int k) {
-    if (index == num.size()) {
-        return (modVal == 0 ? 1 : 0);
-    }
-    if (dp[index][modVal][isLimit] != -1)
-        return dp[index][modVal][isLimit];
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> start(m);
+    for (auto &x : start)
+        cin >> x;
 
-    auto &res = dp[index][modVal][isLimit] = 0;
-    int targetNum = (isLimit ? num[index] - '0' : 9);
-    for (int i = 0; i <= targetNum; i++) {
-        int newModVal = (modVal + i) % k;
-        bool newIsLimit = isLimit && (i == targetNum);
-        res += recur(index + 1, newModVal, newIsLimit, num, dp, k);
-        res %= MOD;
+    vector<vector<int>> mat(n, vector<int>(m));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            cin >> mat[i][j];
+
+    vector<int> countChanges(m);
+    vector<bool> changeDone(m);
+
+    map<int, stack<int>> currModels;
+    for (int i = 0; i < m; i++)
+        currModels[start[i]].push(i);
+
+    for (int i = 0; i < n; i++) {
+        map<int, stack<int>> newModels;
+        vector<bool> checkMatchDone(m);
+        vector<bool> checkModelDone(m);
+        // Check if previous match exists. If yes, remove.
+        for (int j = 0; j < m; j++) {
+            if (currModels.count(mat[i][j]) && !currModels[mat[i][j]].empty()) {
+                int model = currModels[mat[i][j]].top();
+                newModels[mat[i][j]].push(model);
+                currModels[mat[i][j]].pop();
+                checkMatchDone[j] = true;
+                checkModelDone[model] = true;
+            }
+        }
+
+        vector<int> remainingModels;
+        for (int j = 0; j < m; j++)
+            if (!checkModelDone[j])
+                remainingModels.push_back(j);
+
+        int counter = 0;
+        // For the others, give random, increment count if changeNotDone.
+        for (int j = 0; j < m; j++) {
+            if (!checkMatchDone[j]) {
+                int model = remainingModels[counter];
+                newModels[mat[i][j]].push(model);
+                counter++;
+                if (!changeDone[model])
+                    changeDone[model] = true;
+                else
+                    countChanges[model]++;
+            }
+        }
+
+        currModels = newModels;
     }
 
-    return res;
+    int finalAns = 0;
+    for (auto changes : countChanges)
+        finalAns += changes;
+
+    cout << finalAns << "\n";
 }
 
 int main() {
     __;
-    string num;
-    int k;
-    cin >> num >> k;
-    int n = num.size();
-
-    vector<vector<vector<ll>>> dp(n, vector<vector<ll>>(k, vector<ll>(2, -1)));
-    cout << (recur(0, 0, true, num, dp, k) - 1 + MOD) % MOD << "\n";
+    int t;
+    cin >> t;
+    for (int h = 1; h <= t; h++) {
+        cout << "Case #" << h << ": ";
+        solve();
+    }
     return 0;
 }
