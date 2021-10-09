@@ -1,7 +1,7 @@
 const int INF = 1000000000;
 vector<vector<pair<int, int>>> adj;
 
-void dijkstra(int s, vector<int> & d, vector<int> & p) {
+void dijkstra(int s, vector<int> &d, vector<int> &p) {
     int n = adj.size();
     d.assign(n, INF);
     p.assign(n, -1);
@@ -30,7 +30,7 @@ void dijkstra(int s, vector<int> & d, vector<int> & p) {
     }
 }
 
-vector<int> restore_path(int s, int t, vector<int> const& p) {
+vector<int> restore_path(int s, int t, vector<int> const &p) {
     vector<int> path;
 
     for (int v = t; v != s; v = p[v])
