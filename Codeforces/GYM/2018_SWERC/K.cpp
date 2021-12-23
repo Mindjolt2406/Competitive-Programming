@@ -93,3 +93,9 @@ int main() {
     cout << dp[0][n - 1] << "\n";
     return 0;
 }
+
+/*
+root(1 + x^2) + root(1 + x^2 - 2x + 1)
+
+1/2 * (2x) + (-2)/(2 * root (2))
+*/
