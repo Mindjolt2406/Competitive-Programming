@@ -29,32 +29,35 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-<<<<<<< HEAD
-int main() {
-    __;
-
-=======
-// void print12(int ones, int twos) {
-//     twos = (twos & 1);
-//     if (twos && ones >= 2) {
-//         ones -= 2;
-//         twos--;
-//     }
-
-//     cout << (ones & 1) << "\n";
-// }
-
 void solve() {
-    int a, b, c;
-    cin >> a >> b >> c;
-    c = (c & 1);
-    int ans = 0;
-    if (c) {
-        a--;
-        b--;
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
+
+    ll sum1 = 0;
+    for (auto x : v)
+        sum1 += x;
+
+    if ((sum1 * 2) % n != 0) {
+        cout << 0 << "\n";
+        return;
     }
 
-    cout << (a & 1) << "\n";
+    ll target = (2 * sum1) / n;
+
+    map<ll, int> d;
+    ll ans = 0;
+
+    for (auto x : v) {
+        if (d.count(target - x))
+            ans += d[target - x];
+
+        d[x]++;
+    }
+
+    cout << ans << "\n";
 }
 
 int main() {
@@ -64,6 +67,5 @@ int main() {
     while (t--) {
         solve();
     }
->>>>>>> 50644676a31e216953a87cb94bbb3188cddee004
     return 0;
 }

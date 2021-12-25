@@ -29,32 +29,21 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-<<<<<<< HEAD
-int main() {
-    __;
-
-=======
-// void print12(int ones, int twos) {
-//     twos = (twos & 1);
-//     if (twos && ones >= 2) {
-//         ones -= 2;
-//         twos--;
-//     }
-
-//     cout << (ones & 1) << "\n";
-// }
-
 void solve() {
-    int a, b, c;
-    cin >> a >> b >> c;
-    c = (c & 1);
-    int ans = 0;
-    if (c) {
-        a--;
-        b--;
+    int n;
+    cin >> n;
+    vector<string> v(2);
+    for (auto &x : v)
+        cin >> x;
+
+    bool isPoss = true;
+    for (int i = 0; i < n; i++) {
+        if (v[0][i] == '1' && v[1][i] == '1') {
+            isPoss = false;
+        }
     }
 
-    cout << (a & 1) << "\n";
+    cout << (isPoss ? "YES" : "NO") << "\n";
 }
 
 int main() {
@@ -64,6 +53,5 @@ int main() {
     while (t--) {
         solve();
     }
->>>>>>> 50644676a31e216953a87cb94bbb3188cddee004
     return 0;
 }

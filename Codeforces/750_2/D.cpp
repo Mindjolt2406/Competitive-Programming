@@ -29,32 +29,66 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-<<<<<<< HEAD
-int main() {
-    __;
+ll gcd(ll a, ll b) {
+    if (a == 0)
+        return b;
+    return gcd(b % a, a);
+}
 
-=======
-// void print12(int ones, int twos) {
-//     twos = (twos & 1);
-//     if (twos && ones >= 2) {
-//         ones -= 2;
-//         twos--;
-//     }
-
-//     cout << (ones & 1) << "\n";
-// }
+pair<ll, ll> min(pair<ll, ll> p1, pair<ll, ll> p2) { return p1 < p2 ? p1 : p2; }
 
 void solve() {
-    int a, b, c;
-    cin >> a >> b >> c;
-    c = (c & 1);
-    int ans = 0;
-    if (c) {
-        a--;
-        b--;
+    int n;
+    cin >> n;
+    vector<ll> v(n);
+    for (auto &x : v)
+        cin >> x;
+
+    ll sum1 = 0;
+    for (int i = 1; i < n; i++) {
+        sum1 += v[i];
     }
 
-    cout << (a & 1) << "\n";
+    sum1 += v[0];
+
+    pair<ll, ll> min1 = {INF, -1};
+    vector<pair<ll, ll>> pairs(n);
+    for (int i = 0; i < n; i++) {
+        sum1 -= v[i];
+        if (sum1 != 0) {
+            ll g = gcd(sum1, v[i]);
+            ll sum2 = sum1 / g;
+            ll firstNum = v[i] / g;
+
+            min1 = min(min1, mp(abs(firstNum) * (n - 1) + abs(sum2), i));
+            pairs[i] = mp(firstNum, sum2);
+        }
+        sum1 += v[i];
+    }
+
+    // t(min1, pairs[min1.second]);
+
+    vector<ll> b(n);
+    for (int i = 0; i < n; i++) {
+        if (i == min1.se) {
+            b[i] = -pairs[min1.se].second;
+        } else {
+            b[i] = pairs[min1.se].first;
+        }
+    }
+
+    ll sum2 = 0, sum3 = 0;
+    for (int i = 0; i < n; i++) {
+        sum2 += (1LL * v[i] * b[i]);
+        sum3 += abs(b[i]);
+    }
+
+    assert(sum2 == 0);
+    assert(sum3 <= 1e9);
+
+    for (auto x : b)
+        cout << x << " ";
+    cout << "\n";
 }
 
 int main() {
@@ -64,6 +98,5 @@ int main() {
     while (t--) {
         solve();
     }
->>>>>>> 50644676a31e216953a87cb94bbb3188cddee004
     return 0;
 }

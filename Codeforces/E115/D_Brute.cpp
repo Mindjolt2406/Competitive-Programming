@@ -29,32 +29,11 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-<<<<<<< HEAD
-int main() {
-    __;
-
-=======
-// void print12(int ones, int twos) {
-//     twos = (twos & 1);
-//     if (twos && ones >= 2) {
-//         ones -= 2;
-//         twos--;
-//     }
-
-//     cout << (ones & 1) << "\n";
-// }
-
-void solve() {
-    int a, b, c;
-    cin >> a >> b >> c;
-    c = (c & 1);
-    int ans = 0;
-    if (c) {
-        a--;
-        b--;
-    }
-
-    cout << (a & 1) << "\n";
+bool checkTriple(pair<int, int> p1, pair<int, int> p2, pair<int, int> p3) {
+    set<int> firstSet, secondSet;
+    firstSet = {p1.fi, p2.fi, p3.fi};
+    secondSet = {p1.se, p2.se, p3.se};
+    return (firstSet.size() == 3) || (secondSet.size() == 3);
 }
 
 int main() {
@@ -62,8 +41,23 @@ int main() {
     int t;
     cin >> t;
     while (t--) {
-        solve();
+        int n;
+        cin >> n;
+        vector<pair<int, int>> v(n);
+        for (auto &it : v)
+            cin >> it.fi >> it.se;
+
+        ll cnt = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    cnt += checkTriple(v[i], v[j], v[k]);
+                    // t(cnt, v[i], v[j], v[k]);
+                }
+            }
+        }
+
+        cout << cnt << "\n";
     }
->>>>>>> 50644676a31e216953a87cb94bbb3188cddee004
     return 0;
 }

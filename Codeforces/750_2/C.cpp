@@ -29,32 +29,41 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-<<<<<<< HEAD
-int main() {
-    __;
-
-=======
-// void print12(int ones, int twos) {
-//     twos = (twos & 1);
-//     if (twos && ones >= 2) {
-//         ones -= 2;
-//         twos--;
-//     }
-
-//     cout << (ones & 1) << "\n";
-// }
-
 void solve() {
-    int a, b, c;
-    cin >> a >> b >> c;
-    c = (c & 1);
-    int ans = 0;
-    if (c) {
-        a--;
-        b--;
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+
+    int finalAns = INF;
+    for (int i = 0; i < 26; i++) {
+        char currChar = i + 'a';
+        int beg = 0, end = n - 1;
+        int tempCount = 0;
+        bool isPossible = true;
+        while (beg <= end) {
+            if (s[beg] != s[end]) {
+                if (s[beg] == currChar) {
+                    beg++;
+                    tempCount++;
+                } else if (s[end] == currChar) {
+                    end--;
+                    tempCount++;
+                } else {
+                    isPossible = false;
+                    break;
+                }
+            } else {
+                beg++;
+                end--;
+            }
+        }
+
+        if (isPossible)
+            finalAns = min(finalAns, tempCount);
     }
 
-    cout << (a & 1) << "\n";
+    cout << ((finalAns == INF) ? -1 : finalAns) << "\n";
 }
 
 int main() {
@@ -64,6 +73,5 @@ int main() {
     while (t--) {
         solve();
     }
->>>>>>> 50644676a31e216953a87cb94bbb3188cddee004
     return 0;
 }

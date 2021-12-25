@@ -29,41 +29,85 @@ template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-<<<<<<< HEAD
-int main() {
-    __;
+typedef struct BIT // int
+{
+    vector<int> bit;
+    int n;
 
-=======
-// void print12(int ones, int twos) {
-//     twos = (twos & 1);
-//     if (twos && ones >= 2) {
-//         ones -= 2;
-//         twos--;
-//     }
-
-//     cout << (ones & 1) << "\n";
-// }
-
-void solve() {
-    int a, b, c;
-    cin >> a >> b >> c;
-    c = (c & 1);
-    int ans = 0;
-    if (c) {
-        a--;
-        b--;
+    void init(int n) {
+        this->n = n;
+        bit.assign(n, 0);
     }
 
-    cout << (a & 1) << "\n";
+    int sum(int i) {
+        int res = 0;
+        for (; i >= 0; i = (i & (i + 1)) - 1) {
+            res += bit[i];
+        }
+        return res;
+    }
+
+    void inc(int i, int delta) {
+        for (; i < n; i = i | (i + 1)) {
+            bit[i] += delta;
+        }
+    }
+
+    int getsum(int l, int r) {
+        // If l==0, sum(-1) automatically returns the default calue of res, 0
+        return sum(r) - sum(l - 1);
+    }
+
+    void init(vector<int> v) {
+        init(v.size());
+        for (int i = 0; i < v.size(); i++)
+            inc(i, v[i]);
+    }
+} BIT;
+
+const int N = 1030;
+
+void solve() {
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (auto &x : v)
+        cin >> x;
+
+    vector<BIT> bits(N);
+    for (auto &bit : bits) {
+        bit.init(N);
+    }
+
+    bits[v[0]].inc(v[0], 1);
+    bits[0].inc(0, 1);
+
+    for (int i = 1; i < n; i++) {
+        int val = v[i];
+        for (int j = 0; j < N; j++) {
+            if ((j ^ val) < N) {
+                int newVal = (j ^ val);
+                if (bits[newVal].sum(val))
+                    bits[j].inc(val, 1);
+            }
+        }
+    }
+
+    vector<int> ans;
+    for (int j = 0; j < N; j++) {
+        if (bits[j].sum(N - 1))
+            ans.push_back(j);
+    }
+
+    sort(ans.begin(), ans.end());
+    cout << ans.size() << "\n";
+    for (auto it : ans)
+        cout << it << " ";
+    cout << "\n";
 }
 
 int main() {
     __;
-    int t;
-    cin >> t;
-    while (t--) {
-        solve();
-    }
->>>>>>> 50644676a31e216953a87cb94bbb3188cddee004
+    solve();
     return 0;
 }
