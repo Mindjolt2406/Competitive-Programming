@@ -3,10 +3,10 @@
 // g++ -std=c++17 -Wl,-stack_size -Wl,0x10000000 main.cpp
 #define mp make_pair
 #define pu push_back
-#define INF 1e18 + 1
+#define INF 1000000001
 #define MOD 1000000007
 #define EPS 1e-6
-#define int long long int
+#define ll long long int
 #define ld long double
 #define fi first
 #define se second
@@ -23,23 +23,76 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
+template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
-template <class A, class B> ostream& operator<<(ostream& os, const map<A, B>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-void solve() {
+const int N = 2e5 + 10;
+vector<vector<int>> adj(N);
+vector<int> timer(N);
+map<int, int> d;
+int currTime = 0;
 
+void dfs(int u = 0, int p = -1) {
+    timer[u] = currTime;
+    d[currTime] = u;
+    currTime++;
+
+    for (auto v : adj[u]) {
+        if (v - p) {
+            dfs(v, u);
+        }
+    }
 }
 
-int32_t main() {
-    __;
-    int t;
-    cin >> t;
-    while (t--) {
-        solve();
+void solve() {
+    int q;
+    cin >> q;
+    vector<pair<int, int>> queries(q);
+    for (auto &p : queries) {
+        cin >> p.fi >> p.se;
     }
+
+    int counter = 1;
+    vector<pair<int, pair<int, int>>> query2;
+    for (auto p : queries) {
+        int type = p.fi, x = p.se;
+        x--;
+        if (type == 1) {
+            adj[x].push_back(counter);
+            adj[counter].push_back(x);
+            query2.push_back({type, {x, counter}});
+            counter++;
+        } else {
+            query2.push_back({type, {x, x}});
+        }
+    }
+
+    dfs();
+
+    set<int> s;
+    s.insert(timer[0]); // Count exists initially
+
+    // for (int i = 0; i < counter; ++i) {
+    //     t(i, adj[i], timer[i]);
+    // }
+
+    for (auto p : query2) {
+        int type = p.fi, x = p.se.se;
+        // t(type, x);
+        if (type == 1) {
+            s.insert(timer[x]);
+        } else {
+            s.erase(timer[x]);
+            cout << d[(*s.begin())] + 1 << endl;
+        }
+    }
+}
+
+int main() {
+    __;
+    solve();
     return 0;
 }

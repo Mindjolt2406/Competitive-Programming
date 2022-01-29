@@ -3,10 +3,10 @@
 // g++ -std=c++17 -Wl,-stack_size -Wl,0x10000000 main.cpp
 #define mp make_pair
 #define pu push_back
-#define INF 1e18 + 1
+#define INF 1000000001
 #define MOD 1000000007
 #define EPS 1e-6
-#define int long long int
+#define ll long long int
 #define ld long double
 #define fi first
 #define se second
@@ -23,23 +23,45 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
+template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
-template <class A, class B> ostream& operator<<(ostream& os, const map<A, B>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
 void solve() {
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (auto &x : v)
+        cin >> x;
+    
+    map<int, queue<int>> mapQueue;
+    vector<int> sortedArr = v;
+    sort(sortedArr.begin(), sortedArr.end());
+    for (int i = 0; i < n; ++i) {
+        mapQueue[sortedArr[i]].push(i);
+    }
 
+    int maxIndex = 0;
+    int countPartitions = 0;
+    for (int i = 0; i < n; ++i) {
+        int currRealIndex = mapQueue[v[i]].front();
+        // t(i, v[i], currRealIndex, maxIndex);
+        mapQueue[v[i]].pop();
+        maxIndex = max(maxIndex, currRealIndex);
+        if (maxIndex == i) {
+            // t(i);
+            countPartitions++;
+            maxIndex++;
+        }
+    }
+
+    cout << countPartitions << endl;
 }
 
-int32_t main() {
+int main() {
     __;
-    int t;
-    cin >> t;
-    while (t--) {
-        solve();
-    }
+    solve();
     return 0;
 }

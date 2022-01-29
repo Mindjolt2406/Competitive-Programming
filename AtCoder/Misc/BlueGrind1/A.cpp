@@ -3,10 +3,10 @@
 // g++ -std=c++17 -Wl,-stack_size -Wl,0x10000000 main.cpp
 #define mp make_pair
 #define pu push_back
-#define INF 1e18 + 1
-#define MOD 1000000007
+#define INF 1000000001
+#define MOD 998244353
 #define EPS 1e-6
-#define int long long int
+#define ll long long int
 #define ld long double
 #define fi first
 #define se second
@@ -23,23 +23,67 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
+template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
-template <class A, class B> ostream& operator<<(ostream& os, const map<A, B>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-void solve() {
+int MAXLOG = 13;
 
+const int N = 5e3 + 10;
+vector<ll> fact(N);
+vector<ll> inv(N);
+
+ll power(ll x, ll y, ll p)
+{
+	ll res = 1;      // Initialize result
+	x = x % p;  // Update x if it is more than or
+	while (y > 0)
+	{
+			if (y & 1)
+					res = (res*x) % p;
+			y = y>>1; // y = y/2
+			x = (x*x) % p;
+	}
+	return res;
 }
 
-int32_t main() {
-    __;
-    int t;
-    cin >> t;
-    while (t--) {
-        solve();
+void precompute() {
+    fact[0] = inv[0] = 1;
+    for (int i = 1; i < N; ++i) {
+        fact[i] = (fact[i - 1] * i) % MOD;
+        inv[i] = power(fact[i], MOD - 2, MOD);
     }
+}
+
+ll C(int n, int r) {
+    return (((fact[n] * inv[n - r]) % MOD) * inv[r]) % MOD;
+}
+
+int main() {
+    __;
+    precompute();
+    int n, m;
+    cin >> n >> m;
+    vector<vector<ll>> dp(MAXLOG, vector<ll> (m + 1));
+
+    for (int j = 0; j <= min(m, n); j += 2) {
+        dp[0][j] = C(n, j);
+    }
+
+    for (int i = 1; i < MAXLOG; ++i) {
+        int totalTimes = m / (1 << i);
+        for (int k = 0; k <= min(totalTimes, n); k += 2) {
+            int currBitContribution = k * (1 << i);
+            for (int j = currBitContribution; j <= m; ++j) {
+                dp[i][j] += (dp[i-1][j - currBitContribution] * C(n, k)) % MOD;
+                dp[i][j] %= MOD;
+            }
+        }
+    }
+
+    cout << dp[MAXLOG - 1][m] << "\n";
+    // t(dp);
     return 0;
 }

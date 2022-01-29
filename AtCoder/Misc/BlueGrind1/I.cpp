@@ -3,10 +3,10 @@
 // g++ -std=c++17 -Wl,-stack_size -Wl,0x10000000 main.cpp
 #define mp make_pair
 #define pu push_back
-#define INF 1e18 + 1
+#define INF 1000000001
 #define MOD 1000000007
 #define EPS 1e-6
-#define int long long int
+#define ll long long int
 #define ld long double
 #define fi first
 #define se second
@@ -23,23 +23,72 @@
 
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-template <int> ostream& operator<<(ostream& os, const vector<int>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
+template <ll> ostream& operator<<(ostream& os, const vector<ll>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { if(v[i]!=INF) os << v[i]; else os << "INF";if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template<class A, class B> ostream& operator<<(ostream& out, const pair<A, B> &a){ return out<<"("<<a.first<<", "<<a.second<<")";}
 template <typename T> ostream& operator<<(ostream& os, const vector<T>& v) { os << "["; for (int i = 0; i < v.size(); ++i) { os << v[i]; ;if (i != v.size() - 1) os << ", "; } os << "]"; return os; } 
 template <typename T> ostream& operator<<(ostream& os, const set<T>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
-template <class A, class B> ostream& operator<<(ostream& os, const map<A, B>& s) {os << "{"; for(auto it : s) {if(it != *s.rbegin()) os << it << ", "; else os << it;} os << "}"; return os;}
 // clang-format on
 
-void solve() {
+int lis(vector<int> const& a) {
+    int n = a.size();
+    vector<int> d(n+1, INF);
+    d[0] = -INF;
 
+    for (int i = 0; i < n; i++) {
+        int j = upper_bound(d.begin(), d.end(), a[i]) - d.begin();
+        if (d[j-1] < a[i] && a[i] < d[j])
+            d[j] = a[i];
+    }
+
+    int ans = 0;
+    for (int i = 0; i <= n; i++) {
+        if (d[i] < INF)
+            ans = i;
+    }
+    return ans;
 }
 
-int32_t main() {
+int main() {
     __;
-    int t;
-    cin >> t;
-    while (t--) {
-        solve();
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(k);
+    for (auto &x : v)
+        cin >> x;
+    
+    int maxEle = v.back(), minEle = v.front();
+
+    vector<vector<int>> extraAns(k + 1);
+
+    int prevEle = 0;
+    for (int i = 1; i <= k; ++i) {
+        for (int j = v[i - 1] - 1; j > prevEle; --j) {
+            extraAns[i].push_back(j);
+        }
+        prevEle = v[i - 1];
     }
+
+    // t(extraAns);
+
+    for (int i = n; i > maxEle; --i) {
+        extraAns[k - 1].push_back(i);
+    }
+
+    vector<int> ans;
+    for (int i = 0; i <= k; ++i) {
+        for (auto it : extraAns[i])
+            ans.push_back(it);
+        if (i != k) 
+            ans.push_back(v[i]);
+    }
+
+    for (auto it : ans)
+        cout << it << " ";
+    cout << endl;
+    assert(lis(ans) == k);
+    // 1 2 3 4 5 6
+    // 2 4
+    // 5 6 2 1 4 3
+    // 2 6 5 3 1 4
     return 0;
 }
